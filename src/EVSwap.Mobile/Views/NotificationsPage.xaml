@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
+             x:Class="EVSwap.Mobile.Views.NotificationsPage"
+             x:DataType="vm:NotificationViewModel"
+             Title="Notifications"
+             BackgroundColor="#f5f5f5">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadNotificationsCommand}">
+        <Grid RowDefinitions="Auto, *">
+
+            <HorizontalStackLayout Grid.Row="0" Padding="20,10" Spacing="12">
+                <Label Text="{Binding Notifications.Count, StringFormat='{0} Notifications'}" FontSize="16" TextColor="#666" VerticalOptions="Center" />
+                <Button Text="Clear All"
+                        Command="{Binding ClearAllCommand}"
+                        BackgroundColor="#c0392b"
+                        TextColor="White"
+                        CornerRadius="8"
+                        FontSize="12"
+                        HeightRequest="35" />
+            </HorizontalStackLayout>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Notifications}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:NotificationModel">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Mark Read"
+                                               BackgroundColor="#0a5c36"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificationViewModel}}, Path=MarkReadCommand}"
+                                               CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame Margin="10,3" Padding="14" BackgroundColor="{Binding IsRead, Converter={StaticResource BoolToColorConverter}}"
+                                   CornerRadius="10" HasShadow="True" Opacity="{Binding IsRead, Converter={StaticResource BoolToColorConverter}}">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Title}" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{Binding IsRead, Converter={StaticResource BoolToColorConverter}}" />
+                                    <Label Text="{Binding Message}" FontSize="13" TextColor="#666" MaxLines="2" />
+                                    <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}" FontSize="11" TextColor="#999" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="No notifications" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#666" />
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+        </Grid>
+    </RefreshView>
+
+</ContentPage>

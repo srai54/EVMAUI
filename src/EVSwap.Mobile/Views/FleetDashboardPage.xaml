@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
+             x:Class="EVSwap.Mobile.Views.FleetDashboardPage"
+             x:DataType="vm:FleetViewModel"
+             Title="Fleet Dashboard"
+             BackgroundColor="#f5f5f5">
+
+    <RefreshView IsRefreshing="{Binding IsBusy}" Command="{Binding LoadVehiclesCommand}">
+        <CollectionView ItemsSource="{Binding Vehicles}">
+            <CollectionView.Header>
+                <Label Text="Active Fleet Vehicles" FontSize="20" FontAttributes="Bold"
+                       TextColor="#1a1a2e" Padding="20,10" />
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:FleetVehicleModel">
+                    <Frame Margin="10,3" Padding="12" BackgroundColor="White" CornerRadius="8" HasShadow="True">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto">
+                            <Label Text="{Binding VehicleRegNumber}" FontSize="15" FontAttributes="Bold"
+                                   Grid.Row="0" Grid.Column="0" />
+                            <Label Text="{Binding Status}" FontSize="12"
+                                   TextColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                   Grid.Row="0" Grid.Column="1" />
+                            <Label Text="{Binding DriverName, StringFormat='Driver: {0}'}" FontSize="13" TextColor="#666"
+                                   Grid.Row="1" Grid.Column="0" />
+                            <Label Text="{Binding BatteryLevel, StringFormat='{0:F0}%'}" FontSize="13"
+                                   TextColor="{Binding BatteryLevel, Converter={StaticResource BatteryLevelToColorConverter}}"
+                                   Grid.Row="2" Grid.Column="0" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+
+</ContentPage>

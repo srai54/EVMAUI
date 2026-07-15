@@ -1,0 +1,41 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:EVSwap.Mobile"
+             xmlns:helpers="clr-namespace:EVSwap.Mobile.Helpers"
+             x:Class="EVSwap.Mobile.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <helpers:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <helpers:BatteryLevelToColorConverter x:Key="BatteryLevelToColorConverter" />
+            <helpers:StatusToColorConverter x:Key="StatusToColorConverter" />
+            <helpers:InverseBoolConverter x:Key="InverseBoolConverter" />
+
+            <Color x:Key="PrimaryGreen">#0a5c36</Color>
+            <Color x:Key="PrimaryDark">#1a1a2e</Color>
+            <Color x:Key="Background">#f5f5f5</Color>
+            <Color x:Key="CardWhite">White</Color>
+            <Color x:Key="TextGray">#666</Color>
+
+            <Style TargetType="Frame" x:Key="CardFrame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="16" />
+                <Setter Property="HasShadow" Value="True" />
+            </Style>
+
+            <Style TargetType="Button" x:Key="PrimaryButton">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryGreen}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="12" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

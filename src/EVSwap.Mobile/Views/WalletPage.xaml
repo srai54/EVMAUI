@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
+             x:Class="EVSwap.Mobile.Views.WalletPage"
+             x:DataType="vm:WalletViewModel"
+             Title="Wallet"
+             BackgroundColor="#f5f5f5">
+
+    <RefreshView IsRefreshing="{Binding IsBusy}" Command="{Binding LoadTransactionsCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="16">
+
+                <Frame BackgroundColor="White" CornerRadius="16" Padding="20" HasShadow="True">
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label Text="Balance" FontSize="14" TextColor="#666" HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding Balance, StringFormat='${0:F2}'}" FontSize="36" FontAttributes="Bold"
+                               TextColor="#0a5c36" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Button Text="Add Money"
+                        Command="{Binding AddMoneyCommand}"
+                        BackgroundColor="#0a5c36"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        HeightRequest="50"
+                        CornerRadius="12" />
+
+                <Label Text="Recent Transactions" FontSize="18" FontAttributes="Bold" TextColor="#1a1a2e" />
+
+                <CollectionView ItemsSource="{Binding Transactions}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:TransactionModel">
+                            <Frame Margin="0,3" Padding="12" BackgroundColor="White" CornerRadius="8" HasShadow="True">
+                                <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                                    <Label Text="{Binding Reference}" FontSize="14" FontAttributes="Bold"
+                                           Grid.Row="0" Grid.Column="0" />
+                                    <Label Text="{Binding Amount, StringFormat='{0:F2}'}" FontSize="14" FontAttributes="Bold"
+                                           TextColor="{Binding Type, Converter={StaticResource StatusToColorConverter}}"
+                                           Grid.Row="0" Grid.Column="1" />
+                                    <Label Text="{Binding Timestamp, StringFormat='{0:g}'}" FontSize="11" TextColor="#666"
+                                           Grid.Row="1" Grid.Column="0" />
+                                    <Label Text="{Binding Type}" FontSize="11" TextColor="#666"
+                                           Grid.Row="1" Grid.Column="1" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+
+</ContentPage>

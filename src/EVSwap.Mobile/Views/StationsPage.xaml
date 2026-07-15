@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
+             xmlns:helpers="clr-namespace:EVSwap.Mobile.Helpers"
+             x:Class="EVSwap.Mobile.Views.StationsPage"
+             x:DataType="vm:StationViewModel"
+             Title="Stations"
+             BackgroundColor="#f5f5f5">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshStationsCommand}">
+        <CollectionView ItemsSource="{Binding Stations}"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding NavigateToStationCommand}"
+                        SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
+            <CollectionView.EmptyView>
+                <Label Text="No stations found" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="#666" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:StationModel">
+                    <Frame Margin="10,5" Padding="16" BackgroundColor="White" CornerRadius="12" HasShadow="True">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto">
+                            <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Row="0" Grid.Column="0" />
+                            <Label Text="{Binding Status}" FontSize="12" TextColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                   Grid.Row="0" Grid.Column="1" VerticalOptions="Center" />
+                            <Label Text="{Binding Address}" FontSize="13" TextColor="#666" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+                            <Label Text="{Binding DistanceKm, StringFormat='{0:F1} km'}" FontSize="13" TextColor="#0a5c36" Grid.Row="2" Grid.Column="0" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+
+</ContentPage>

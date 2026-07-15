@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
+             x:Class="EVSwap.Mobile.Views.BatterySwapPage"
+             x:DataType="vm:BatterySwapViewModel"
+             Title="Battery Swaps"
+             BackgroundColor="#f5f5f5">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <HorizontalStackLayout Grid.Row="0" Spacing="12" Padding="20,10">
+            <Button Text="Active Requests"
+                    Command="{Binding ToggleViewCommand}"
+                    BackgroundColor="{Binding ShowActiveRequests, Converter={StaticResource BoolToColorConverter}}"
+                    TextColor="White" CornerRadius="8" />
+            <Button Text="History"
+                    Command="{Binding ToggleViewCommand}"
+                    BackgroundColor="Gray"
+                    TextColor="White" CornerRadius="8" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="1" Spacing="12" Padding="20,5">
+            <Button Text="Request Swap" Command="{Binding RequestSwapCommand}"
+                    BackgroundColor="#0a5c36" TextColor="White" CornerRadius="8" />
+            <Button Text="Scan QR" Command="{Binding ScanQrCommand}"
+                    BackgroundColor="#1a5c9e" TextColor="White" CornerRadius="8" />
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding ActiveRequests}"
+                        IsVisible="{Binding ShowActiveRequests}"
+                        Margin="20,10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SwapRequestModel">
+                    <Frame Margin="0,3" Padding="12" BackgroundColor="White" CornerRadius="8" HasShadow="True">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Text="{Binding StationName}" FontSize="14" FontAttributes="Bold" />
+                            <Label Text="{Binding Status}" FontSize="12"
+                                   TextColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                   Grid.Column="1" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding SwapHistory}"
+                        IsVisible="{Binding ShowActiveRequests, Converter={StaticResource InverseBoolConverter}}"
+                        Margin="20,10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SwapHistoryModel">
+                    <Frame Margin="0,3" Padding="12" BackgroundColor="White" CornerRadius="8" HasShadow="True">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding OldBatterySerial, StringFormat='Old: {0}'}" FontSize="13" />
+                            <Label Text="{Binding NewBatterySerial, StringFormat='New: {0}'}" FontSize="13" />
+                            <Label Text="{Binding CompletedAt, StringFormat='{0:g}'}" FontSize="11" TextColor="#666" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

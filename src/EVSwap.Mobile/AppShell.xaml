@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="EVSwap.Mobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:EVSwap.Mobile.Views"
+    xmlns:helpers="clr-namespace:EVSwap.Mobile.Helpers"
+    Shell.FlyoutBehavior="Disabled">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <helpers:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <!-- Auth Routes (no tabs) -->
+    <ShellContent Route="login" ContentTemplate="{DataTemplate views:LoginPage}" Shell.NavBarIsVisible="False" FlyoutItemIsVisible="False" />
+    <ShellContent Route="register" ContentTemplate="{DataTemplate views:RegisterPage}" FlyoutItemIsVisible="False" />
+    <ShellContent Route="forgotpassword" ContentTemplate="{DataTemplate views:ForgotPasswordPage}" FlyoutItemIsVisible="False" />
+
+    <!-- Main TabBar -->
+    <TabBar Route="main">
+        <ShellContent Route="dashboard" Title="Dashboard"
+                       ContentTemplate="{DataTemplate views:DashboardPage}" />
+        <ShellContent Route="stations" Title="Stations"
+                       ContentTemplate="{DataTemplate views:StationsPage}" />
+        <ShellContent Route="batteryswap" Title="Swaps"
+                       ContentTemplate="{DataTemplate views:BatterySwapPage}" />
+        <ShellContent Route="trips" Title="Trips"
+                       ContentTemplate="{DataTemplate views:TripsPage}" />
+        <ShellContent Route="wallet" Title="Wallet"
+                       ContentTemplate="{DataTemplate views:WalletPage}" />
+        <ShellContent Route="notifications" Title="Alerts"
+                       ContentTemplate="{DataTemplate views:NotificationsPage}" />
+        <ShellContent Route="profile" Title="Profile"
+                       ContentTemplate="{DataTemplate views:ProfilePage}" />
+    </TabBar>
+
+    <!-- Admin Flyout -->
+    <FlyoutItem Title="Admin" FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Route="admindashboard" Title="Dashboard"
+                       ContentTemplate="{DataTemplate views:AdminDashboardPage}" />
+        <ShellContent Route="usermanagement" Title="Users"
+                       ContentTemplate="{DataTemplate views:UserManagementPage}" />
+    </FlyoutItem>
+
+    <!-- Fleet Flyout -->
+    <FlyoutItem Title="Fleet">
+        <ShellContent Route="fleetdashboard" Title="Fleet Dashboard"
+                       ContentTemplate="{DataTemplate views:FleetDashboardPage}" />
+    </FlyoutItem>
+
+    <!-- Maintenance Flyout -->
+    <FlyoutItem Title="Maintenance">
+        <ShellContent Route="maintenancedashboard" Title="Maintenance"
+                       ContentTemplate="{DataTemplate views:MaintenanceDashboardPage}" />
+    </FlyoutItem>
+
+</Shell>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
+             x:Class="EVSwap.Mobile.Views.UserManagementPage"
+             x:DataType="vm:UserManagementViewModel"
+             Title="User Management"
+             BackgroundColor="#f5f5f5">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <Frame Grid.Row="0" Margin="20,10" Padding="10" BackgroundColor="White" CornerRadius="8">
+            <Picker ItemsSource="{Binding Roles}"
+                    SelectedItem="{Binding SelectedRole}"
+                    Title="Filter by Role"
+                    BackgroundColor="White" />
+        </Frame>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Users}" Margin="20,5">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:UserModel">
+                    <Frame Margin="0,3" Padding="12" BackgroundColor="White" CornerRadius="8" HasShadow="True">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding Username}" FontSize="15" FontAttributes="Bold" />
+                                <Label Text="{Binding Email}" FontSize="12" TextColor="#666" />
+                            </VerticalStackLayout>
+                            <Label Text="{Binding Roles[0]}" FontSize="11"
+                                   BackgroundColor="#e0e0e0" Padding="6,2" Grid.Column="1"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

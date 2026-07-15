@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             x:Class="EVSwap.Mobile.Views.AddMoneyPage"
+             x:DataType="vm:AddMoneyViewModel"
+             Title="Add Money"
+             BackgroundColor="#f5f5f5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <Label Text="Add Funds" FontSize="28" FontAttributes="Bold" TextColor="#1a1a2e" />
+
+            <Frame BackgroundColor="White" CornerRadius="16" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="16">
+
+                    <Label Text="Amount" FontSize="14" TextColor="#666" />
+                    <Entry Placeholder="0.00" Text="{Binding Amount}" Keyboard="Numeric"
+                           BackgroundColor="#f5f5f5" FontSize="24" />
+
+                    <Label Text="Payment Method" FontSize="14" TextColor="#666" />
+                    <Picker ItemsSource="{Binding PaymentMethods}"
+                            SelectedItem="{Binding SelectedPaymentMethod}"
+                            Title="Select Method"
+                            BackgroundColor="#f5f5f5" />
+
+                    <Button Text="Add Money"
+                            Command="{Binding AddMoneyCommand}"
+                            BackgroundColor="#0a5c36"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HeightRequest="50"
+                            CornerRadius="12" />
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="#0a5c36" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

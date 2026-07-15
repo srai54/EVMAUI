@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
+             x:Class="EVSwap.Mobile.Views.ProfilePage"
+             x:DataType="vm:ProfileViewModel"
+             Title="Profile"
+             BackgroundColor="#f5f5f5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <Frame BackgroundColor="White" CornerRadius="16" Padding="30" HasShadow="True" HorizontalOptions="Center">
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Frame HeightRequest="80" WidthRequest="80" CornerRadius="40" BackgroundColor="#0a5c36"
+                           HorizontalOptions="Center" Padding="0" HasShadow="False">
+                        <Label Text="👤" FontSize="36" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                    </Frame>
+                    <Label Text="{Binding UserName}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#1a1a2e" />
+                    <Label Text="{Binding Email}" FontSize="14" TextColor="#666" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="White" CornerRadius="16" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Username" FontSize="12" TextColor="#666" />
+                        <Entry Text="{Binding UserName}" BackgroundColor="#f5f5f5" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Email" FontSize="12" TextColor="#666" />
+                        <Entry Text="{Binding Email}" Keyboard="Email" BackgroundColor="#f5f5f5" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Phone" FontSize="12" TextColor="#666" />
+                        <Entry Text="{Binding Phone}" Keyboard="Telephone" BackgroundColor="#f5f5f5" />
+                    </VerticalStackLayout>
+
+                    <Button Text="Update Profile"
+                            Command="{Binding UpdateProfileCommand}"
+                            BackgroundColor="#0a5c36"
+                            TextColor="White"
+                            CornerRadius="8" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Settings"
+                    Command="{Binding GoToSettingsCommand}"
+                    BackgroundColor="Transparent"
+                    TextColor="#666"
+                    BorderColor="#ccc"
+                    BorderWidth="1"
+                    HeightRequest="45"
+                    CornerRadius="8" />
+
+            <Button Text="Logout"
+                    Command="{Binding LogoutCommand}"
+                    BackgroundColor="#c0392b"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    CornerRadius="12" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

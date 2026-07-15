@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EVSwap.API/EVSwap.API.csproj" />
+    <Project Path="src/EVSwap.Mobile/EVSwap.Mobile.csproj" />
+  </Folder>
+</Solution>
