@@ -1,0 +1,75 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": [
+      "~/.config/opencode/node_modules/superpowers/skills"
+    ]
+  },
+  "command": {
+    "brainstorming": {
+      "template": "Load and follow the brainstorming superpowers skill. Explore user intent, requirements, and design before writing any code.",
+      "description": "Explore user intent, requirements, and design before implementation",
+      "agent": "auto"
+    },
+    "test-driven-development": {
+      "template": "Load and follow the test-driven-development superpowers skill. Enforce RED-GREEN-REFACTOR: write failing test, watch it fail, write minimal code, watch it pass, refactor, commit.",
+      "description": "RED-GREEN-REFACTOR cycle for implementing features or bugfixes",
+      "agent": "auto"
+    },
+    "systematic-debugging": {
+      "template": "Load and follow the systematic-debugging superpowers skill. Debug the issue using the 4-phase root cause process before proposing fixes.",
+      "description": "4-phase root cause debugging process for bugs and test failures",
+      "agent": "auto"
+    },
+    "writing-plans": {
+      "template": "Load and follow the writing-plans superpowers skill. Break the spec into bite-sized tasks with exact file paths, complete code, and verification steps.",
+      "description": "Create detailed implementation plans from specs or requirements",
+      "agent": "auto"
+    },
+    "subagent-driven-development": {
+      "template": "Load and follow the subagent-driven-development superpowers skill. Dispatch independent tasks to subagents with two-stage review: spec compliance then code quality.",
+      "description": "Fast iteration with two-stage subagent review",
+      "agent": "auto"
+    },
+    "executing-plans": {
+      "template": "Load and follow the executing-plans superpowers skill. Execute the implementation plan with review checkpoints.",
+      "description": "Execute a written implementation plan in a separate session with review checkpoints",
+      "agent": "auto"
+    },
+    "dispatching-parallel-agents": {
+      "template": "Load and follow the dispatching-parallel-agents superpowers skill. Break the work into independent tasks and dispatch each to a separate subagent.",
+      "description": "Dispatch 2+ independent tasks to parallel subagents",
+      "agent": "auto"
+    },
+    "requesting-code-review": {
+      "template": "Load and follow the requesting-code-review superpowers skill. Review the current work against requirements and report issues by severity.",
+      "description": "Verify work meets requirements before merging",
+      "agent": "auto"
+    },
+    "receiving-code-review": {
+      "template": "Load and follow the receiving-code-review superpowers skill. Process the code review feedback with technical rigor, verify claims, and implement appropriately.",
+      "description": "Process code review feedback with technical rigor and verification",
+      "agent": "auto"
+    },
+    "using-git-worktrees": {
+      "template": "Load and follow the using-git-worktrees superpowers skill. Create an isolated workspace on a new branch and verify a clean test baseline.",
+      "description": "Create isolated workspace for feature work",
+      "agent": "auto"
+    },
+    "verification-before-completion": {
+      "template": "Load and follow the verification-before-completion superpowers skill. Run verification commands and confirm output before declaring success.",
+      "description": "Verify work is complete before committing or creating PRs",
+      "agent": "auto"
+    },
+    "finishing-a-development-branch": {
+      "template": "Load and follow the finishing-a-development-branch superpowers skill. Present structured options for merge, PR, or discard of the current branch.",
+      "description": "Guide completion of development work with merge/PR/cleanup options",
+      "agent": "auto"
+    },
+    "writing-skills": {
+      "template": "Load and follow the writing-skills superpowers skill. Create or modify skills following best practices and testing methodology.",
+      "description": "Create, edit, or verify superpowers skills",
+      "agent": "auto"
+    }
+  }
+}
