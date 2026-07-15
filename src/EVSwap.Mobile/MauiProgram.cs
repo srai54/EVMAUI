@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using EVSwap.Mobile.Interfaces;
 using EVSwap.Mobile.Services;
-using EVSwap.Mobile.SignalR;
 using EVSwap.Mobile.ViewModels;
 using EVSwap.Mobile.Views;
 using Microsoft.Extensions.Logging;
@@ -26,8 +25,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISecureStorageService, SecureStorageService>();
         builder.Services.AddSingleton<IConnectivityService, ConnectivityService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
-        builder.Services.AddSingleton<ILocalDatabaseService, LocalDatabaseService>();
-        builder.Services.AddSingleton<ISignalRService, SignalRService>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IApiService, ApiService>();
 

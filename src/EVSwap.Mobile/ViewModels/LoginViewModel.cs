@@ -16,9 +16,6 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string _password = string.Empty;
 
-    [ObservableProperty]
-    private bool _isBiometricAvailable;
-
     public LoginViewModel(
         IAuthService authService,
         ISecureStorageService secureStorage,
@@ -67,32 +64,6 @@ public partial class LoginViewModel : BaseViewModel
     private async Task RegisterAsync()
     {
         await NavigationService.NavigateToAsync(Constants.Routes.Register);
-    }
-
-    [RelayCommand]
-    private async Task BiometricLoginAsync()
-    {
-        IsBusy = true;
-        try
-        {
-            var success = await _authService.BiometricLoginAsync();
-            if (success)
-            {
-                await NavigationService.NavigateToAsync($"//{Constants.Routes.Dashboard}");
-            }
-            else
-            {
-                await ShowAlertAsync("Biometric Login", "Authentication failed.");
-            }
-        }
-        catch (Exception ex)
-        {
-            await ShowAlertAsync("Error", $"Biometric login failed: {ex.Message}");
-        }
-        finally
-        {
-            IsBusy = false;
-        }
     }
 
     [RelayCommand]

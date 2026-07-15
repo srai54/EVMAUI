@@ -73,6 +73,10 @@ dotnet run -f net10.0-windows10.0.19041.0
 
 If the API is not running or login fails, use the **"Bypass Login (Dev)"** button on the login screen to enter the app with a dummy admin account. All features will show sample data when the API is unavailable.
 
+## Interview Prep
+
+See **[INTERVIEW.md](INTERVIEW.md)** for 120+ curated interview questions covering the app architecture, .NET MAUI, C#, EF Core, MVVM, DI, REST APIs, performance, security, and general software engineering — all tied back to this project.
+
 ## Tech Stack
 
 - **Backend:** ASP.NET Core, Entity Framework Core, SQL Server/PostgreSQL

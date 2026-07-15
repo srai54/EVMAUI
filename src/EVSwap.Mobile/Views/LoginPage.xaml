@@ -60,12 +60,6 @@
                             HeightRequest="50"
                             CornerRadius="12" />
 
-                    <Button Text="Biometric Login"
-                             Command="{Binding BiometricLoginCommand}"
-                             BackgroundColor="Transparent"
-                             TextColor="#666"
-                             FontSize="14" />
-
                     <Button Text="Bypass Login (Dev)"
                              Command="{Binding BypassLoginCommand}"
                              BackgroundColor="#dc3545"
