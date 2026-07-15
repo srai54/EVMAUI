@@ -11,4 +11,5 @@ public interface IAuthService
     bool IsAuthenticated { get; }
     UserModel? CurrentUser { get; }
     Task<bool> BiometricLoginAsync();
+    void BypassLogin();
 }

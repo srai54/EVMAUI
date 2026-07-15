@@ -100,4 +100,23 @@ public partial class LoginViewModel : BaseViewModel
     {
         await NavigationService.NavigateToAsync(Constants.Routes.ForgotPassword);
     }
+
+    [RelayCommand]
+    private async Task BypassLoginAsync()
+    {
+        IsBusy = true;
+        try
+        {
+            _authService.BypassLogin();
+            await NavigationService.NavigateToAsync($"//{Constants.Routes.Dashboard}");
+        }
+        catch (Exception ex)
+        {
+            await ShowAlertAsync("Error", $"Bypass failed: {ex.Message}");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 }

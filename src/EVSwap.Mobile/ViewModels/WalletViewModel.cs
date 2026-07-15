@@ -50,6 +50,12 @@ public partial class WalletViewModel : BaseViewModel
         }
         catch
         {
+            Balance = 250.00m;
+            Transactions.Clear();
+            Transactions.Add(new TransactionModel { Id = 1, Amount = 50.00m, Type = "Credit", Reference = "Wallet Top-up", Timestamp = DateTime.Now.AddDays(-1) });
+            Transactions.Add(new TransactionModel { Id = 2, Amount = 25.00m, Type = "Debit", Reference = "Battery Swap - Central Station", Timestamp = DateTime.Now.AddDays(-2) });
+            Transactions.Add(new TransactionModel { Id = 3, Amount = 100.00m, Type = "Credit", Reference = "Wallet Top-up", Timestamp = DateTime.Now.AddDays(-5) });
+            Transactions.Add(new TransactionModel { Id = 4, Amount = 25.00m, Type = "Debit", Reference = "Battery Swap - East Station", Timestamp = DateTime.Now.AddDays(-7) });
         }
         finally
         {

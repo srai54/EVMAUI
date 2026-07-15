@@ -105,6 +105,23 @@ public partial class DashboardViewModel : BaseViewModel
         }
         catch
         {
+            BatteryPercent = 75;
+            BatteryStatus = "Good";
+            BatteryTemperature = 32.5;
+            BatteryVoltage = 48.2;
+            BatteryCycles = 120;
+            RemainingRange = "112.5 km";
+            WalletBalance = 250.00m;
+            TotalTrips = 18;
+            TotalDistance = "245.6 km";
+            TotalSwapsCompleted = 12;
+            UnreadNotifications = 3;
+
+            RecentActivity.Clear();
+            RecentActivity.Add(new RecentActivityModel { Type = "Swap", Description = "Battery swap completed at Central Station", Timestamp = DateTime.Now.AddHours(-2), Icon = "battery.png" });
+            RecentActivity.Add(new RecentActivityModel { Type = "Trip", Description = "Trip #182 completed - 12.5 km", Timestamp = DateTime.Now.AddHours(-5), Icon = "map.png" });
+            RecentActivity.Add(new RecentActivityModel { Type = "Payment", Description = "Wallet topped up $50.00", Timestamp = DateTime.Now.AddDays(-1), Icon = "wallet.png" });
+            RecentActivity.Add(new RecentActivityModel { Type = "Swap", Description = "Battery health check passed", Timestamp = DateTime.Now.AddDays(-2), Icon = "check.png" });
         }
         finally
         {

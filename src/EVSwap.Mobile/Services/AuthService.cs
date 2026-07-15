@@ -63,6 +63,20 @@ public class AuthService : IAuthService
         return response;
     }
 
+    public void BypassLogin()
+    {
+        CurrentUser = new UserModel
+        {
+            Id = 1,
+            Username = "admin",
+            Email = "admin@evswap.com",
+            Phone = "0000000000",
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow,
+            Roles = new List<string> { "Admin" }
+        };
+    }
+
     public async Task LogoutAsync()
     {
         CurrentUser = null;

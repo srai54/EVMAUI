@@ -55,7 +55,27 @@ public class ApiService : IApiService
         }
 
         var content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMsg = string.IsNullOrWhiteSpace(content)
+                ? $"Request failed with status {(int)response.StatusCode} {response.ReasonPhrase}"
+                : content;
+            throw new HttpRequestException(errorMsg, null, response.StatusCode);
+        }
+
+        if (string.IsNullOrWhiteSpace(content))
+            return default;
+
+        var result = JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (result is null && content is not null)
+        {
+            throw new InvalidOperationException(
+                $"Failed to deserialize response into {typeof(T).Name}. Status: {(int)response.StatusCode}, Body: {content[..Math.Min(content.Length, 500)]}");
+        }
+
+        return result;
     }
 
     private static async Task<HttpRequestMessage> CloneRequestAsync(HttpRequestMessage request)

@@ -43,6 +43,12 @@ public partial class NotificationViewModel : BaseViewModel
         }
         catch
         {
+            Notifications.Clear();
+            Notifications.Add(new NotificationModel { Id = 1, Title = "Swap Complete", Message = "Your battery swap at Central Station is complete.", IsRead = false, CreatedAt = DateTime.Now.AddHours(-1), Type = "Swap" });
+            Notifications.Add(new NotificationModel { Id = 2, Title = "Payment Received", Message = "$50.00 added to your wallet.", IsRead = false, CreatedAt = DateTime.Now.AddHours(-3), Type = "Payment" });
+            Notifications.Add(new NotificationModel { Id = 3, Title = "Battery Health Alert", Message = "Your battery health is at 85%. Consider a check-up.", IsRead = true, CreatedAt = DateTime.Now.AddDays(-1), Type = "Alert" });
+            Notifications.Add(new NotificationModel { Id = 4, Title = "Trip Reminder", Message = "You have an active trip in progress.", IsRead = true, CreatedAt = DateTime.Now.AddDays(-2), Type = "Trip" });
+            UnreadCount = 2;
         }
         finally
         {

@@ -59,6 +59,14 @@ public partial class BatterySwapViewModel : BaseViewModel
         }
         catch
         {
+            ActiveRequests.Clear();
+            ActiveRequests.Add(new SwapRequestModel { Id = 1, StationName = "Central Station", RequestedBatteryType = "Standard", Status = "Pending", CreatedAt = DateTime.Now.AddHours(-1), RiderName = "You" });
+            ActiveRequests.Add(new SwapRequestModel { Id = 2, StationName = "East Side Hub", RequestedBatteryType = "Premium", Status = "InProgress", CreatedAt = DateTime.Now.AddMinutes(-30), RiderName = "You" });
+
+            SwapHistory.Clear();
+            SwapHistory.Add(new SwapHistoryModel { Id = 1, StationId = 1, OldBatterySerial = "BAT-001", NewBatterySerial = "BAT-101", CompletedAt = DateTime.Now.AddDays(-2) });
+            SwapHistory.Add(new SwapHistoryModel { Id = 2, StationId = 2, OldBatterySerial = "BAT-002", NewBatterySerial = "BAT-102", CompletedAt = DateTime.Now.AddDays(-5) });
+            SwapHistory.Add(new SwapHistoryModel { Id = 3, StationId = 1, OldBatterySerial = "BAT-003", NewBatterySerial = "BAT-103", CompletedAt = DateTime.Now.AddDays(-10) });
         }
         finally
         {

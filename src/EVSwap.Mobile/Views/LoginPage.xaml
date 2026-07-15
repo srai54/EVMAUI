@@ -29,12 +29,14 @@
                     <Entry Placeholder="Username"
                            Text="{Binding Username}"
                            ReturnType="Next"
+                           TextColor="#1a1a2e"
                            BackgroundColor="#f5f5f5" />
 
                     <Entry Placeholder="Password"
                            Text="{Binding Password}"
                            IsPassword="True"
                            ReturnType="Done"
+                           TextColor="#1a1a2e"
                            BackgroundColor="#f5f5f5" />
 
                     <Button Text="Login"
@@ -59,10 +61,18 @@
                             CornerRadius="12" />
 
                     <Button Text="Biometric Login"
-                            Command="{Binding BiometricLoginCommand}"
-                            BackgroundColor="Transparent"
-                            TextColor="#666"
-                            FontSize="14" />
+                             Command="{Binding BiometricLoginCommand}"
+                             BackgroundColor="Transparent"
+                             TextColor="#666"
+                             FontSize="14" />
+
+                    <Button Text="Bypass Login (Dev)"
+                             Command="{Binding BypassLoginCommand}"
+                             BackgroundColor="#dc3545"
+                             TextColor="White"
+                             FontSize="12"
+                             HeightRequest="36"
+                             CornerRadius="8" />
 
                     <Label Text="Forgot Password?"
                            TextColor="#0a5c36"
