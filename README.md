@@ -2,6 +2,16 @@
 
 A full-stack electric vehicle battery swap management application built with .NET 10. The system manages battery swap stations, riders, fleet vehicles, maintenance, and wallet transactions.
 
+## Screenshots
+
+<!-- Add screenshots here after placing images in the screenshots/ folder -->
+
+![Login Page](screenshots/login-page.png)
+![Dashboard](screenshots/dashboard.png)
+![Stations](screenshots/stations.png)
+![Wallet](screenshots/wallet.png)
+![Battery Swap](screenshots/battery-swap.png)
+
 ## Project Structure
 
 ```
