@@ -29,7 +29,7 @@ public partial class AdminDashboardViewModel : BaseViewModel
         IsBusy = true;
         try
         {
-            Dashboard = await _apiService.GetAsync<DashboardModel>("/api/admin/dashboard");
+            Dashboard = await _apiService.GetAsync<DashboardModel>("/api/report/dashboard");
         }
         catch
         {

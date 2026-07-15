@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EVSwap.Mobile.Helpers;
@@ -12,22 +13,49 @@ public partial class DashboardViewModel : BaseViewModel
     private readonly IAuthService _authService;
 
     [ObservableProperty]
+    private string _userName = string.Empty;
+
+    [ObservableProperty]
     private double _batteryPercent;
 
     [ObservableProperty]
     private string _remainingRange = string.Empty;
 
     [ObservableProperty]
-    private string _vehicleStatus = string.Empty;
+    private string _batteryStatus = string.Empty;
+
+    [ObservableProperty]
+    private double? _batteryTemperature;
+
+    [ObservableProperty]
+    private double? _batteryVoltage;
+
+    [ObservableProperty]
+    private int? _batteryCycles;
+
+    [ObservableProperty]
+    private decimal _walletBalance;
+
+    [ObservableProperty]
+    private int _totalTrips;
+
+    [ObservableProperty]
+    private string _totalDistance = string.Empty;
+
+    [ObservableProperty]
+    private int _totalSwapsCompleted;
+
+    [ObservableProperty]
+    private int _unreadNotifications;
+
+    [ObservableProperty]
+    private ObservableCollection<RecentActivityModel> _recentActivity = new();
 
     [ObservableProperty]
     private bool _isAdmin;
 
     [ObservableProperty]
     private DashboardModel? _adminDashboard;
-
-    [ObservableProperty]
-    private string _userName = string.Empty;
 
     public DashboardViewModel(
         IApiService apiService,
@@ -50,17 +78,29 @@ public partial class DashboardViewModel : BaseViewModel
             UserName = _authService.CurrentUser?.Username ?? "User";
             IsAdmin = _authService.CurrentUser?.Roles?.Contains("Admin") == true;
 
-            var battery = await _apiService.GetAsync<BatteryModel>("/api/battery/my");
-            if (battery is not null)
+            var userDash = await _apiService.GetAsync<UserDashboardModel>("/api/report/user-dashboard");
+            if (userDash is not null)
             {
-                BatteryPercent = battery.ChargeLevel;
-                RemainingRange = $"{battery.ChargeLevel * 1.5:F1} km";
-                VehicleStatus = battery.Status;
+                BatteryPercent = userDash.BatteryPercent;
+                BatteryStatus = userDash.BatteryStatus;
+                BatteryTemperature = userDash.BatteryTemperature;
+                BatteryVoltage = userDash.BatteryVoltage;
+                BatteryCycles = userDash.BatteryCycles;
+                RemainingRange = $"{userDash.BatteryPercent * 1.5:F1} km";
+                WalletBalance = userDash.WalletBalance;
+                TotalTrips = userDash.TotalTrips;
+                TotalDistance = $"{userDash.TotalDistanceKm:F1} km";
+                TotalSwapsCompleted = userDash.TotalSwapsCompleted;
+                UnreadNotifications = userDash.UnreadNotifications;
+
+                RecentActivity.Clear();
+                foreach (var item in userDash.RecentActivity)
+                    RecentActivity.Add(item);
             }
 
             if (IsAdmin)
             {
-                AdminDashboard = await _apiService.GetAsync<DashboardModel>("/api/admin/dashboard");
+                AdminDashboard = await _apiService.GetAsync<DashboardModel>("/api/report/dashboard");
             }
         }
         catch
@@ -89,5 +129,17 @@ public partial class DashboardViewModel : BaseViewModel
     private async Task NavigateToTripsAsync()
     {
         await NavigationService.NavigateToAsync($"//{Constants.Routes.Trips}");
+    }
+
+    [RelayCommand]
+    private async Task NavigateToWalletAsync()
+    {
+        await NavigationService.NavigateToAsync($"//{Constants.Routes.Wallet}");
+    }
+
+    [RelayCommand]
+    private async Task NavigateToNotificationsAsync()
+    {
+        await NavigationService.NavigateToAsync($"//{Constants.Routes.Notifications}");
     }
 }

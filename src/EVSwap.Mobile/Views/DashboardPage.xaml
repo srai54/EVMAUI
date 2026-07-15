@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:EVSwap.Mobile.ViewModels"
-             xmlns:helpers="clr-namespace:EVSwap.Mobile.Helpers"
+             xmlns:models="clr-namespace:EVSwap.Mobile.Models"
              x:Class="EVSwap.Mobile.Views.DashboardPage"
              x:DataType="vm:DashboardViewModel"
              Title="Dashboard"
@@ -10,51 +10,128 @@
 
     <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadDashboardCommand}">
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="16">
+            <VerticalStackLayout Padding="16" Spacing="12">
 
-                <Label Text="{Binding UserName, StringFormat='Hello, {0}'}" FontSize="24" FontAttributes="Bold" TextColor="#1a1a2e" />
+                <!-- Header -->
+                <Label Text="{Binding UserName, StringFormat='Hello, {0}'}" FontSize="26" FontAttributes="Bold" TextColor="#1a1a2e" />
+                <Label Text="Here's your EV status overview" FontSize="13" TextColor="#888" Margin="0,-6,0,4" />
 
+                <!-- Battery Card -->
                 <Frame BackgroundColor="White" CornerRadius="16" Padding="20" HasShadow="True">
-                    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="16">
-                        <Label Text="Battery Status" FontSize="18" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Row="0" Grid.Column="0" />
-                        <Label Text="{Binding BatteryPercent, StringFormat='{0:F0}%'}" FontSize="36" FontAttributes="Bold" TextColor="{Binding BatteryPercent, Converter={StaticResource BatteryLevelToColorConverter}}" Grid.Row="1" Grid.Column="0" />
+                    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto" ColumnSpacing="16" RowSpacing="4">
+                        <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="🔋" FontSize="20" VerticalOptions="Center" />
+                            <Label Text="Battery Status" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Label Text="{Binding BatteryStatus}" FontSize="12" TextColor="#888" Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                        <Label Text="{Binding BatteryPercent, StringFormat='{0:F0}%'}" FontSize="42" FontAttributes="Bold" TextColor="{Binding BatteryPercent, Converter={StaticResource BatteryLevelToColorConverter}}" Grid.Row="1" Grid.Column="0" />
                         <Label Text="{Binding RemainingRange}" FontSize="14" TextColor="#666" Grid.Row="2" Grid.Column="0" />
-                        <BoxView Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
-                                 WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                        <BoxView Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
+                                 WidthRequest="64" HeightRequest="64" CornerRadius="32"
                                  Color="{Binding BatteryPercent, Converter={StaticResource BatteryLevelToColorConverter}}"
                                  VerticalOptions="Center" />
+                        <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Spacing="16" Margin="0,8,0,0">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding BatteryTemperature, StringFormat='{0:F1}°C'}" FontSize="13" FontAttributes="Bold" TextColor="#e67e22" />
+                                <Label Text="Temp" FontSize="10" TextColor="#999" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding BatteryVoltage, StringFormat='{0:F2}V'}" FontSize="13" FontAttributes="Bold" TextColor="#2980b9" />
+                                <Label Text="Voltage" FontSize="10" TextColor="#999" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding BatteryCycles, StringFormat='{0}'}" FontSize="13" FontAttributes="Bold" TextColor="#8e44ad" />
+                                <Label Text="Cycles" FontSize="10" TextColor="#999" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
                     </Grid>
                 </Frame>
 
-                <Label Text="{Binding VehicleStatus, StringFormat='Status: {0}'}" TextColor="#666" FontSize="14" />
+                <!-- Wallet Card -->
+                <Frame BackgroundColor="White" CornerRadius="16" Padding="20" HasShadow="True">
+                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                        <Label Text="💰" FontSize="24" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Wallet Balance" FontSize="12" TextColor="#888" />
+                            <Label Text="{Binding WalletBalance, StringFormat='${0:N2}'}" FontSize="22" FontAttributes="Bold" TextColor="#27ae60" />
+                        </VerticalStackLayout>
+                        <Frame Grid.Column="2" BackgroundColor="#e8f5e9" CornerRadius="8" Padding="10,6" HasShadow="False">
+                            <Label Text="+ Add" FontSize="13" FontAttributes="Bold" TextColor="#27ae60">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding NavigateToWalletCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Frame>
+                    </Grid>
+                </Frame>
 
-                <Label Text="Quick Actions" FontSize="18" FontAttributes="Bold" TextColor="#1a1a2e" Margin="0,10,0,0" />
+                <!-- Stats Row -->
+                <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="8">
+                    <Frame Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="8" HasShadow="True">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="🚗" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding TotalTrips}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                            <Label Text="Trips" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="12" Padding="8" HasShadow="True">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="🔋" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding TotalSwapsCompleted}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#27ae60" />
+                            <Label Text="Swaps" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame Grid.Column="2" BackgroundColor="White" CornerRadius="12" Padding="8" HasShadow="True">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="📏" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding TotalDistance}" FontSize="15" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                            <Label Text="Dist" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame Grid.Column="3" BackgroundColor="White" CornerRadius="12" Padding="8" HasShadow="True">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="🔔" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding UnreadNotifications}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e74c3c" />
+                            <Label Text="Alerts" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToNotificationsCommand}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </Grid>
 
-                <Grid ColumnDefinitions="*, *" ColumnSpacing="12" RowDefinitions="Auto, Auto" RowSpacing="12">
-                    <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                        <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                            <Label Text="📍" FontSize="28" HorizontalTextAlignment="Center" />
-                            <Label Text="Find Station" FontSize="14" HorizontalTextAlignment="Center" />
+                <!-- Quick Actions -->
+                <Label Text="Quick Actions" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Margin="0,4,0,0" />
+
+                <Grid ColumnDefinitions="*, *, *" ColumnSpacing="8">
+                    <Frame Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="12" HasShadow="True">
+                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                            <Frame BackgroundColor="#e3f2fd" CornerRadius="20" WidthRequest="40" HeightRequest="40" Padding="0" HasShadow="False" HorizontalOptions="Center">
+                                <Label Text="📍" FontSize="18" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Frame>
+                            <Label Text="Find Station" FontSize="12" HorizontalTextAlignment="Center" TextColor="#333" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding NavigateToStationsCommand}" />
                             </Frame.GestureRecognizers>
                         </VerticalStackLayout>
                     </Frame>
-
-                    <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                        <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                            <Label Text="🔋" FontSize="28" HorizontalTextAlignment="Center" />
-                            <Label Text="Swap Battery" FontSize="14" HorizontalTextAlignment="Center" />
+                    <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="12" Padding="12" HasShadow="True">
+                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                            <Frame BackgroundColor="#e8f5e9" CornerRadius="20" WidthRequest="40" HeightRequest="40" Padding="0" HasShadow="False" HorizontalOptions="Center">
+                                <Label Text="🔋" FontSize="18" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Frame>
+                            <Label Text="Swap Battery" FontSize="12" HorizontalTextAlignment="Center" TextColor="#333" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding NavigateToSwapCommand}" />
                             </Frame.GestureRecognizers>
                         </VerticalStackLayout>
                     </Frame>
-
-                    <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                        <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
-                            <Label Text="🚗" FontSize="28" HorizontalTextAlignment="Center" />
-                            <Label Text="My Trips" FontSize="14" HorizontalTextAlignment="Center" />
+                    <Frame Grid.Column="2" BackgroundColor="White" CornerRadius="12" Padding="12" HasShadow="True">
+                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                            <Frame BackgroundColor="#fff3e0" CornerRadius="20" WidthRequest="40" HeightRequest="40" Padding="0" HasShadow="False" HorizontalOptions="Center">
+                                <Label Text="🚗" FontSize="18" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Frame>
+                            <Label Text="My Trips" FontSize="12" HorizontalTextAlignment="Center" TextColor="#333" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding NavigateToTripsCommand}" />
                             </Frame.GestureRecognizers>
@@ -62,15 +139,86 @@
                     </Frame>
                 </Grid>
 
+                <!-- Recent Activity -->
+                <Label Text="Recent Activity" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Margin="0,4,0,0" />
+
+                <CollectionView ItemsSource="{Binding RecentActivity}" HeightRequest="220">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:RecentActivityModel">
+                            <Frame Margin="0,3" Padding="12,10" BackgroundColor="White" CornerRadius="10" HasShadow="True">
+                                <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="12">
+                                    <Label Text="{Binding Icon}" FontSize="20" VerticalOptions="Center" />
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding Description}" FontSize="13" TextColor="#333" LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding Timestamp, StringFormat='{0:MMM dd, h:mm tt}'}" FontSize="10" TextColor="#999" />
+                                    </VerticalStackLayout>
+                                    <Frame Grid.Column="2" BackgroundColor="#f0f0f0" CornerRadius="6" Padding="6,3" HasShadow="False" VerticalOptions="Center">
+                                        <Label Text="{Binding Type}" FontSize="9" TextColor="#666" />
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="No recent activity" FontSize="13" TextColor="#aaa" HorizontalTextAlignment="Center" Margin="0,20" />
+                    </CollectionView.EmptyView>
+                </CollectionView>
+
+                <!-- Admin Section -->
                 <Frame BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True"
                        IsVisible="{Binding IsAdmin}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Admin Stats" FontSize="18" FontAttributes="Bold" TextColor="#1a1a2e" />
-                        <Label Text="{Binding AdminDashboard.TotalUsers, StringFormat='Users: {0}'}" FontSize="14" />
-                        <Label Text="{Binding AdminDashboard.ActiveRiders, StringFormat='Active Riders: {0}'}" FontSize="14" />
-                        <Label Text="{Binding AdminDashboard.BatteriesAvailable, StringFormat='Batteries: {0}'}" FontSize="14" />
-                        <Label Text="{Binding AdminDashboard.TotalStations, StringFormat='Stations: {0}'}" FontSize="14" />
-                        <Label Text="{Binding AdminDashboard.DailySwaps, StringFormat='Today Swaps: {0}'}" FontSize="14" />
+                        <Label Text="⚙️ System Overview" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" />
+                        <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto" RowSpacing="8" ColumnSpacing="12">
+                            <Label Grid.Row="0" Grid.Column="0" FontSize="13" TextColor="#666">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Users: " />
+                                        <Span Text="{Binding AdminDashboard.TotalUsers}" FontAttributes="Bold" TextColor="#0a5c36" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="0" Grid.Column="1" FontSize="13" TextColor="#666">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Swaps: " />
+                                        <Span Text="{Binding AdminDashboard.DailySwaps}" FontAttributes="Bold" TextColor="#f39c12" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="1" Grid.Column="0" FontSize="13" TextColor="#666">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Batteries: " />
+                                        <Span Text="{Binding AdminDashboard.BatteriesAvailable}" FontAttributes="Bold" TextColor="#27ae60" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="1" Grid.Column="1" FontSize="13" TextColor="#666">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Revenue: " />
+                                        <Span Text="{Binding AdminDashboard.TotalRevenue, StringFormat='${0:N0}'}" FontAttributes="Bold" TextColor="#8e44ad" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="2" Grid.Column="0" FontSize="13" TextColor="#666">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Stations: " />
+                                        <Span Text="{Binding AdminDashboard.TotalStations}" FontAttributes="Bold" TextColor="#2980b9" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="2" Grid.Column="1" FontSize="13" TextColor="#666">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Pending: " />
+                                        <Span Text="{Binding AdminDashboard.PendingSwaps}" FontAttributes="Bold" TextColor="#e74c3c" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
                     </VerticalStackLayout>
                 </Frame>
 

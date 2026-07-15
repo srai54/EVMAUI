@@ -7,63 +7,222 @@
              Title="Admin Dashboard"
              BackgroundColor="#f5f5f5">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="16">
+    <RefreshView IsRefreshing="{Binding IsBusy}" Command="{Binding LoadDashboardCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="12">
 
-            <Label Text="Admin Dashboard" FontSize="24" FontAttributes="Bold" TextColor="#1a1a2e" />
+                <Label Text="Admin Dashboard" FontSize="24" FontAttributes="Bold" TextColor="#1a1a2e" />
+                <Label Text="System-wide performance &amp; metrics" FontSize="12" TextColor="#888" Margin="0,-6,0,4" />
 
-            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="12" RowSpacing="12">
-                <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                    <VerticalStackLayout>
-                        <Label Text="Users" FontSize="12" TextColor="#666" />
-                        <Label Text="{Binding Dashboard.TotalUsers}" FontSize="28" FontAttributes="Bold" TextColor="#0a5c36" />
+                <!-- Users Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="👥" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Users" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalUsers}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#0a5c36" />
+                                <Label Text="Total" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.ActiveRiders}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                                <Label Text="Active" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.NewUsersToday}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#27ae60" />
+                                <Label Text="Today" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.NewUsersThisWeek}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                                <Label Text="Week" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
                     </VerticalStackLayout>
                 </Frame>
-                <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                    <VerticalStackLayout>
-                        <Label Text="Stations" FontSize="12" TextColor="#666" />
-                        <Label Text="{Binding Dashboard.TotalStations}" FontSize="28" FontAttributes="Bold" TextColor="#2980b9" />
-                    </VerticalStackLayout>
-                </Frame>
-                <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                    <VerticalStackLayout>
-                        <Label Text="Batteries" FontSize="12" TextColor="#666" />
-                        <Label Text="{Binding Dashboard.BatteriesAvailable}" FontSize="28" FontAttributes="Bold" TextColor="#27ae60" />
-                    </VerticalStackLayout>
-                </Frame>
-                <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                    <VerticalStackLayout>
-                        <Label Text="Today Swaps" FontSize="12" TextColor="#666" />
-                        <Label Text="{Binding Dashboard.DailySwaps}" FontSize="28" FontAttributes="Bold" TextColor="#f39c12" />
-                    </VerticalStackLayout>
-                </Frame>
-                <Frame Grid.Row="2" Grid.Column="0" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                    <VerticalStackLayout>
-                        <Label Text="Revenue" FontSize="12" TextColor="#666" />
-                        <Label Text="{Binding Dashboard.Revenue, StringFormat='${0:F2}'}" FontSize="28" FontAttributes="Bold" TextColor="#8e44ad" />
-                    </VerticalStackLayout>
-                </Frame>
-                <Frame Grid.Row="2" Grid.Column="1" BackgroundColor="White" CornerRadius="12" Padding="16" HasShadow="True">
-                    <VerticalStackLayout>
-                        <Label Text="Active Riders" FontSize="12" TextColor="#666" />
-                        <Label Text="{Binding Dashboard.ActiveRiders}" FontSize="28" FontAttributes="Bold" TextColor="#e67e22" />
-                    </VerticalStackLayout>
-                </Frame>
-            </Grid>
 
-            <Label Text="Management" FontSize="18" FontAttributes="Bold" TextColor="#1a1a2e" Margin="0,10,0,0" />
+                <!-- Stations Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="📍" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Stations" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalStations}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                                <Label Text="Total" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.ActiveStations}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#27ae60" />
+                                <Label Text="Active" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.InactiveStations}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e74c3c" />
+                                <Label Text="Inactive" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <Button Text="User Management"
-                    Command="{Binding NavigateToUserManagementCommand}"
-                    BackgroundColor="#2980b9" TextColor="White" CornerRadius="8" />
-            <Button Text="Fleet Dashboard"
-                    Command="{Binding NavigateToFleetCommand}"
-                    BackgroundColor="#27ae60" TextColor="White" CornerRadius="8" />
-            <Button Text="Maintenance"
-                    Command="{Binding NavigateToMaintenanceCommand}"
-                    BackgroundColor="#e67e22" TextColor="White" CornerRadius="8" />
+                <!-- Batteries Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="🔋" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Batteries" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *, *, *" ColumnSpacing="6">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalBatteries}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#1a1a2e" />
+                                <Label Text="Total" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.BatteriesAvailable}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#27ae60" />
+                                <Label Text="Avail" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.BatteriesInUse}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                                <Label Text="InUse" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.BatteriesMaintenance}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                                <Label Text="Maint" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="4" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.BatteriesDisposed}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e74c3c" />
+                                <Label Text="Disc" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <!-- Swaps Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="🔄" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Swaps" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.DailySwaps}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#f39c12" />
+                                <Label Text="Today" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.WeeklySwaps}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                                <Label Text="Week" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalSwaps}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                                <Label Text="Total" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.PendingSwaps}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e74c3c" />
+                                <Label Text="Pending" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Revenue Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="💰" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Revenue" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TodayRevenue, StringFormat='${0:N0}'}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#27ae60" />
+                                <Label Text="Today" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.WeeklyRevenue, StringFormat='${0:N0}'}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                                <Label Text="This Week" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalRevenue, StringFormat='${0:N0}'}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#8e44ad" />
+                                <Label Text="Total" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Trips Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="🚗" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Trips" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.ActiveTrips}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e74c3c" />
+                                <Label Text="Active" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TodayTrips}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#f39c12" />
+                                <Label Text="Today" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalTrips}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                                <Label Text="Total" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalDistanceKm, StringFormat='{0:N0}'}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                                <Label Text="Km" FontSize="10" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Fleet, Maintenance, Tickets Section -->
+                <Frame BackgroundColor="White" CornerRadius="14" Padding="16" HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="8">
+                            <Label Text="📊" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="Operations" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Grid.Column="1" VerticalOptions="Center" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalFleetVehicles}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#2980b9" />
+                                <Label Text="Fleet" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.PendingMaintenance}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e67e22" />
+                                <Label Text="Maint" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.TotalMaintenance}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#8e44ad" />
+                                <Label Text="Total M" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                                <Label Text="{Binding Dashboard.OpenTickets}" FontSize="22" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#e74c3c" />
+                                <Label Text="Tickets" FontSize="9" TextColor="#999" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Management -->
+                <Label Text="Management" FontSize="16" FontAttributes="Bold" TextColor="#1a1a2e" Margin="0,4,0,0" />
+
+                <Grid ColumnDefinitions="*, *, *" ColumnSpacing="8">
+                    <Button Grid.Column="0" Text="Users"
+                            Command="{Binding NavigateToUserManagementCommand}"
+                            BackgroundColor="#2980b9" TextColor="White" CornerRadius="10" FontSize="13" />
+                    <Button Grid.Column="1" Text="Fleet"
+                            Command="{Binding NavigateToFleetCommand}"
+                            BackgroundColor="#27ae60" TextColor="White" CornerRadius="10" FontSize="13" />
+                    <Button Grid.Column="2" Text="Maintenance"
+                            Command="{Binding NavigateToMaintenanceCommand}"
+                            BackgroundColor="#e67e22" TextColor="White" CornerRadius="10" FontSize="13" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
 
 </ContentPage>
