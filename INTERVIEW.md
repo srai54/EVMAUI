@@ -150,6 +150,7 @@ Shell routing resolves `DashboardPage` → DI creates `DashboardViewModel` → `
 
 **Q10: What is `Constants.ApiBaseUrl` and how is it configured?**
 
+**Answer:**
 ```csharp
 public const string ApiBaseUrl = "http://localhost:5238";
 ```
@@ -162,6 +163,7 @@ Defined in `Helpers/Constants.cs`. Matches the API's `launchSettings.json`:
 
 **Q11: How does the app handle JWT token storage and retrieval using `SecureStorage`?**
 
+**Answer:**
 ```csharp
 // Store
 await SecureStorage.Default.SetAsync("auth_token", jwtToken);
@@ -180,6 +182,7 @@ _httpClient.DefaultRequestHeaders.Authorization =
 
 **Q12: Why does `App.xaml.cs` check for a stored token on startup?**
 
+**Answer:**
 To provide auto-login. If a valid token exists, the user goes straight to Dashboard instead of Login:
 
 ```csharp
@@ -197,6 +200,7 @@ shell.Loaded += async (s, e) =>
 
 **Q13: How does `BaseViewModel` reduce code duplication?**
 
+**Answer:**
 It provides common properties and methods that every ViewModel needs:
 
 ```csharp
@@ -223,12 +227,14 @@ Every ViewModel extends `BaseViewModel` and inherits `IsBusy`, `Title`, `IsRefre
 
 **Q14: What is the role of `ISecureStorageService`?**
 
+**Answer:**
 It wraps `SecureStorage.Default` into an injectable interface so ViewModels and services can store/retrieve sensitive data without depending on the platform API directly. This also makes the code testable — you can mock `ISecureStorageService` in unit tests.
 
 ---
 
 **Q15: How would you add offline support for swap requests when the API is unreachable?**
 
+**Answer:**
 Use a local SQLite database to queue requests:
 
 ```csharp
@@ -261,6 +267,7 @@ ConnectivityService.ConnectivityChanged += async (s, connected) =>
 
 **Q16: What is the difference between `ContentPage`, `Shell`, and `NavigationPage` in MAUI?**
 
+**Answer:**
 | Type | Purpose |
 |------|---------|
 | `ContentPage` | A single screen. The base building block for all pages. |
@@ -281,6 +288,7 @@ await Navigation.PushAsync(new DetailPage());
 
 **Q17: How does Shell routing work? Give an example from the app.**
 
+**Answer:**
 Shell uses URI-based routing. Routes are defined in `AppShell.xaml`:
 
 ```xml
@@ -303,6 +311,7 @@ await Shell.Current.GoToAsync("stations");
 
 **Q18: What are the differences between `Transient` and `Singleton` lifetimes in MAUI DI?**
 
+**Answer:**
 | Lifetime | Created | Disposed | Use Case |
 |----------|---------|---------|----------|
 | `AddSingleton` | Once, on first resolution | When app exits | Shared state (AuthService, HttpClient) |
@@ -318,6 +327,7 @@ builder.Services.AddTransient<LoginViewModel>();             // new instance eac
 
 **Q19: How would you pass complex data between pages in MAUI?**
 
+**Answer:**
 **Method 1: QueryProperty**
 ```csharp
 [QueryProperty(nameof(Station), "Station")]
@@ -348,6 +358,7 @@ WeakReferenceMessenger.Default.Send(new SwapCompletedMessage(swapId));
 
 **Q20: What is `AppThemeBinding` and how is it used in `Styles.xaml`?**
 
+**Answer:**
 `AppThemeBinding` switches a property value based on the current OS theme (Light/Dark):
 
 ```xml
@@ -362,6 +373,7 @@ In light mode, Entry text is black. In dark mode, it's white. This is defined gl
 
 **Q21: How does MAUI handle platform-specific code?**
 
+**Answer:**
 Three approaches:
 
 1. **Platform folders:** Files in `Platforms/Windows/`, `Platforms/Android/`, `Platforms/iOS/` compile only for that platform.
@@ -381,6 +393,7 @@ Three approaches:
 
 **Q22: What layout panels are available in MAUI and when would you use each?**
 
+**Answer:**
 | Layout | Behavior | Use Case |
 |--------|----------|----------|
 | `VerticalStackLayout` | Stacks children vertically | Simple column layouts |
@@ -402,6 +415,7 @@ Three approaches:
 
 **Q23: Explain how `CollectionView` differs from `ListView`. Which is better for performance?**
 
+**Answer:**
 | Feature | CollectionView | ListView |
 |---------|---------------|----------|
 | Performance | Better (uses less memory) | Good but older |
@@ -417,6 +431,7 @@ Three approaches:
 
 **Q24: How does data binding work in MAUI XAML?**
 
+**Answer:**
 Data binding connects a UI property to a ViewModel property. When the ViewModel property changes, the UI updates automatically (if `INotifyPropertyChanged` is implemented).
 
 ```xml
@@ -435,6 +450,7 @@ The `[ObservableProperty]` source generator creates the property, raises `Proper
 
 **Q25: What is `x:DataType` and why is it important for compiled bindings?**
 
+**Answer:**
 `x:DataType` tells the XAML compiler the type of the binding context, enabling compile-time binding validation:
 
 ```xml
@@ -449,6 +465,7 @@ Without it, bindings are resolved at runtime. If you typo "Usernam", no compile 
 
 **Q26: How do you handle large lists in MAUI without freezing the UI?**
 
+**Answer:**
 1. **Use `CollectionView`** — it virtualizes items (only renders visible ones).
 2. **Use `AsyncCommand` / background loading** — load data on a background thread.
 3. **Paginate** — load 20 items at a time using `RemainingItemsThreshold`.
@@ -464,6 +481,7 @@ Without it, bindings are resolved at runtime. If you typo "Usernam", no compile 
 
 **Q27: What is `VisualStateManager` and how is it used in button styles?**
 
+**Answer:**
 `VisualStateManager` lets you define different visual states for a control. MAUI buttons have states like Normal, Disabled, PointerOver, Focused:
 
 ```xml
@@ -488,6 +506,7 @@ When `IsEnabled=false`, the button automatically changes to the Disabled visual 
 
 **Q28: How would you implement pull-to-refresh in a MAUI app?**
 
+**Answer:**
 Use `RefreshView` wrapping your scrollable content:
 
 ```xml
@@ -512,6 +531,7 @@ async Task RefreshStationsAsync()
 
 **Q29: Explain the MAUI lifecycle: `OnAppearing`, `OnDisappearing`.**
 
+**Answer:**
 ```csharp
 protected override void OnAppearing()
 {
@@ -536,6 +556,7 @@ Flow: `Constructor → OnAppearing → (user interacts) → OnDisappearing → O
 
 **Q30: How do you style an app globally using `ResourceDictionary`?**
 
+**Answer:**
 Define styles in `Resources/Styles/Styles.xaml` and merge it in `App.xaml`:
 
 ```xml
@@ -557,6 +578,7 @@ Then any control in the app automatically picks up the matching style:
 
 **Q31: Explain `async` / `await` — what happens on the call stack when you await a task?**
 
+**Answer:**
 When you `await` a task:
 1. The method returns control to its caller (not blocking the thread).
 2. The runtime captures the current synchronization context (on UI thread, this is the main thread).
@@ -580,6 +602,7 @@ async Task LoadDataAsync()
 
 **Q32: What is `Task<T>` vs `ValueTask<T>`?**
 
+**Answer:**
 | Type | Heap allocation | Use Case |
 |------|----------------|----------|
 | `Task<T>` | Always allocates on heap | Async operations that usually run asynchronously |
@@ -600,6 +623,7 @@ public async ValueTask<User?> GetUserAsync(int id)
 
 **Q33: What is a deadlock with `async` / `await` and how do you avoid it in MAUI?**
 
+**Answer:**
 Classic deadlock: blocking on async code with `.Result` or `.Wait()` on a UI thread:
 
 ```csharp
@@ -615,6 +639,7 @@ var data = _api.GetAsync<User>("/users/1").Result;
 
 **Q34: Explain `ConfigureAwait(false)` — should you use it in MAUI apps?**
 
+**Answer:**
 `ConfigureAwait(false)` tells the runtime NOT to capture the sync context. The continuation can run on any thread.
 
 ```csharp
@@ -627,6 +652,7 @@ await _httpClient.GetStringAsync(url).ConfigureAwait(false);
 
 **Q35: How does `JsonSerializer.Deserialize<T>` handle missing or extra JSON properties?**
 
+**Answer:**
 ```csharp
 // JSON: {"name":"John","extra":"ignored"}
 // Class: public class Person { public string Name { get; set; } }
@@ -644,6 +670,7 @@ var person = JsonSerializer.Deserialize<Person>(json,
 
 **Q36: What is the difference between `record` and `class` in C#?**
 
+**Answer:**
 | Feature | class | record |
 |---------|-------|--------|
 | Equality | Reference equality (`object.ReferenceEquals`) | Value equality (compares all properties) |
@@ -670,6 +697,7 @@ Console.WriteLine(a == b); // true (with record), false (with class)
 
 **Q37: Explain nullable reference types.**
 
+**Answer:**
 ```csharp
 public string Name { get; set; }         // non-nullable - compiler warns if might be null
 public string? Description { get; set; } // nullable - OK to be null
@@ -683,6 +711,7 @@ UserModel? user = null;  // nullable reference type
 
 **Q38: What is pattern matching in C#?**
 
+**Answer:**
 Pattern matching lets you check the shape of data concisely:
 
 ```csharp
@@ -704,6 +733,7 @@ if (user is { IsActive: true, Roles: ["Admin"] })
 
 **Q39: How does `List<T>.ForEach` differ from a `foreach` loop?**
 
+**Answer:**
 ```csharp
 // foreach - can use await, break, continue
 foreach (var station in stations)
@@ -722,6 +752,7 @@ stations.ForEach(s => Console.WriteLine(s.Name));
 
 **Q40: What is `FireAndForget` and why is it used in `SettingsViewModel`?**
 
+**Answer:**
 `FireAndForget` means running an async method without awaiting it. Used when you don't need to wait for the result:
 
 ```csharp
@@ -738,6 +769,7 @@ partial void OnIsBiometricEnabledChanged(bool value)
 
 **Q41: Explain the `IDisposable` pattern.**
 
+**Answer:**
 `IDisposable` releases unmanaged resources (file handles, network connections) deterministically:
 
 ```csharp
@@ -758,6 +790,7 @@ In MAUI, Singleton services live as long as the app, so disposal happens at app 
 
 **Q42: What is `Span<T>` and how does it differ from array slices?**
 
+**Answer:**
 `Span<T>` is a stack-allocated, ref-safe view over contiguous memory. No heap allocation.
 
 ```csharp
@@ -773,6 +806,7 @@ Console.WriteLine(numbers[1]);           // 99
 
 **Q43: How does `yield return` work internally?**
 
+**Answer:**
 The compiler generates a state machine class that implements `IEnumerable<T>` and `IEnumerator<T>`:
 
 ```csharp
@@ -792,6 +826,7 @@ public IEnumerable<int> GetNumbers()
 
 **Q44: What is the difference between `StringBuilder` and string concatenation in a loop?**
 
+**Answer:**
 ```csharp
 // BAD - creates 10000 intermediate strings
 string result = "";
@@ -811,6 +846,7 @@ Strings are immutable. Each `+=` creates a new string, copying the old content. 
 
 **Q45: Explain covariance and contravariance in C# generics.**
 
+**Answer:**
 ```csharp
 // Covariance (out) - you can use a more derived type
 IEnumerable<object> objects = new List<string>();  // string → object
@@ -831,6 +867,7 @@ Covariance uses `out T` (output position only). Contravariance uses `in T` (inpu
 
 **Q46: How does `DbInitializer.SeedData()` work?**
 
+**Answer:**
 It runs at application startup (in `Program.cs`) to populate the database with demo data:
 
 ```csharp
@@ -846,6 +883,7 @@ using (var scope = app.Services.CreateScope())
 
 **Q47: What is Code-First migration in EF Core?**
 
+**Answer:**
 You write C# entity classes, and EF Core generates the database schema:
 
 ```bash
@@ -870,6 +908,7 @@ protected override void Up(MigrationBuilder migrationBuilder)
 
 **Q48: Explain `Include()` and `ThenInclude()` in EF Core.**
 
+**Answer:**
 Eager loading of related data:
 
 ```csharp
@@ -886,6 +925,7 @@ Without `Include()`, navigation properties are null. EF Core lazy loading would 
 
 **Q49: What is the difference between `FirstOrDefault()` and `SingleOrDefault()`?**
 
+**Answer:**
 | Method | Returns | Throws If |
 |--------|---------|-----------|
 | `FirstOrDefault()` | First matching element, or null | Never throws (for valid scenarios) |
@@ -902,6 +942,7 @@ Use `FirstOrDefault` when you expect 0 or 1+ results. Use `SingleOrDefault` when
 
 **Q50: How does EF Core change tracking work?**
 
+**Answer:**
 When you query entities, EF Core takes a snapshot of their values. When you call `SaveChangesAsync()`, it compares current values to the snapshot to determine what changed:
 
 ```csharp
@@ -919,6 +960,7 @@ var users = db.Users.AsNoTracking().ToList();  // no tracking overhead
 
 **Q51: What is the difference between SQL Server and PostgreSQL with EF Core?**
 
+**Answer:**
 | Feature | SQL Server | PostgreSQL |
 |---------|-----------|------------|
 | NuGet package | `Microsoft.EntityFrameworkCore.SqlServer` | `Npgsql.EntityFrameworkCore.PostgreSQL` |
@@ -932,6 +974,7 @@ var users = db.Users.AsNoTracking().ToList();  // no tracking overhead
 
 **Q52: How would you handle a million battery swap records efficiently?**
 
+**Answer:**
 1. **Indexing** — index on `CreatedAt`, `StationId`, `RiderId`
 2. **Pagination** — never `ToList()` everything. Use `Skip()`/`Take()`.
 3. **Projection** — select only needed columns with `.Select()`.
@@ -953,6 +996,7 @@ var page = await context.Swaps
 
 **Q53: What is a migration bundle?**
 
+**Answer:**
 A self-contained executable that applies migrations to a database. Useful for CI/CD deployment where you don't want the EF Core CLI tool installed:
 
 ```bash
@@ -965,6 +1009,7 @@ dotnet ef migrations bundle --output deploy-migrations.exe
 
 **Q54: How does EF Core map C# `enum` types to the database?**
 
+**Answer:**
 By default, enums are stored as integers:
 
 ```csharp
@@ -987,6 +1032,7 @@ builder.Property(b => b.Status).HasConversion<string>();
 
 **Q55: What is the `IQueryable<T>` vs `IEnumerable<T>` difference?**
 
+**Answer:**
 | Feature | IQueryable | IEnumerable |
 |---------|-----------|-------------|
 | Execution | Deferred, on the database server | In-memory |
@@ -1004,6 +1050,7 @@ IEnumerable<User> enumerable = db.Users.ToList().Where(u => u.IsActive);  // loa
 
 **Q56: Explain the full HTTP request/response lifecycle of a login call.**
 
+**Answer:**
 1. **Mobile:** `ApiService.PostAsync<AuthResponse>("/api/auth/login", loginRequest)`
 2. **Serialization:** `PostAsJsonAsync` serializes `LoginRequest` to `{"username":"admin","password":"Admin@123"}`
 3. **HTTP Request:** `POST http://localhost:5238/api/auth/login` with `Content-Type: application/json`
@@ -1019,12 +1066,14 @@ IEnumerable<User> enumerable = db.Users.ToList().Where(u => u.IsActive);  // loa
 
 **Q57: What status codes does `ApiService.HandleResponse` consider successful?**
 
+**Answer:**
 Any 2xx status code. `HttpResponseMessage.IsSuccessStatusCode` returns `true` for 200-299. The method throws an `HttpRequestException` for all non-success codes (401, 403, 404, 500, etc.).
 
 ---
 
 **Q58: How does JWT authentication work?**
 
+**Answer:**
 JWT (JSON Web Token) has three parts: `header.payload.signature`
 
 ```
@@ -1044,6 +1093,7 @@ public class SwapController : ControllerBase
 
 **Q59: How would you intercept all HTTP requests to add logging?**
 
+**Answer:**
 Use `DelegatingHandler` — a middleware for `HttpClient`:
 
 ```csharp
@@ -1067,6 +1117,7 @@ _httpClient = new HttpClient(new LoggingHandler { InnerHandler = new HttpClientH
 
 **Q60: What is the `HttpClient` lifetime in a MAUI app?**
 
+**Answer:**
 `HttpClient` is designed to be reused. Creating a new `HttpClient` for every request can exhaust TCP ports (socket exhaustion). In MAUI, register it as a Singleton:
 
 ```csharp
@@ -1080,6 +1131,7 @@ builder.Services.AddSingleton<HttpClient>(_ =>
 
 **Q61: How does `PostAsJsonAsync<T>` serialize your request object?**
 
+**Answer:**
 ```csharp
 await _httpClient.PostAsJsonAsync(endpoint, new { Username = "admin", Password = "Admin@123" });
 // Sends: POST /api/auth/login
@@ -1093,6 +1145,7 @@ It uses `JsonSerializerDefaults.Web` (camelCase naming policy, case-insensitive 
 
 **Q62: What is `EnsureSuccessStatusCode()` and what happens when it fails?**
 
+**Answer:**
 ```csharp
 response.EnsureSuccessStatusCode();
 // Throws HttpRequestException if status code is NOT 2xx
@@ -1103,6 +1156,7 @@ response.EnsureSuccessStatusCode();
 
 **Q63: How would you implement request retry with exponential backoff?**
 
+**Answer:**
 Using Polly NuGet package:
 
 ```csharp
@@ -1121,6 +1175,7 @@ Retry after 2s, then 4s, then 8s.
 
 **Q64: What is `MultipartFormDataContent` used for?**
 
+**Answer:**
 Uploading files (images, documents) to the server:
 
 ```csharp
@@ -1134,6 +1189,7 @@ await _httpClient.PostAsync("/api/upload", content);
 
 **Q65: How do you handle file uploads in MAUI?**
 
+**Answer:**
 ```csharp
 var result = await FilePicker.PickAsync(new PickOptions
 {
@@ -1158,6 +1214,7 @@ if (result is not null)
 
 **Q66: Explain the MVVM pattern.**
 
+**Answer:**
 MVVM separates code into three layers:
 
 ```
@@ -1175,6 +1232,7 @@ View (XAML) ←→ ViewModel (logic) ←→ Model (data)
 
 **Q67: What does `[ObservableProperty]` generate behind the scenes?**
 
+**Answer:**
 ```csharp
 // You write:
 [ObservableProperty]
@@ -1202,6 +1260,7 @@ The source generator runs at compile time and produces the property, `INotifyPro
 
 **Q68: What is the difference between `[RelayCommand]` and `ICommand`?**
 
+**Answer:**
 | Aspect | `[RelayCommand]` | Manual `ICommand` |
 |--------|-----------------|-------------------|
 | Code | One attribute | 10+ lines per command |
@@ -1221,6 +1280,7 @@ public ICommand LoginCommand => _loginCommand ??= new AsyncRelayCommand(LoginAsy
 
 **Q69: How does `INotifyPropertyChanged` work?**
 
+**Answer:**
 ```csharp
 public class MyViewModel : INotifyPropertyChanged
 {
@@ -1245,6 +1305,7 @@ When `Name` changes, it raises `PropertyChanged`. The UI binding listens for thi
 
 **Q70: What is `ObservableCollection<T>` and when should you use it?**
 
+**Answer:**
 `ObservableCollection<T>` raises `CollectionChanged` when items are added/removed/replaced. The UI automatically updates.
 
 ```csharp
@@ -1261,6 +1322,7 @@ stations.Add(newStation);  // UI updates automatically
 
 **Q71: How does two-way binding work for `Entry` fields?**
 
+**Answer:**
 ```xml
 <Entry Text="{Binding Username, Mode=TwoWay}" />
 ```
@@ -1279,6 +1341,7 @@ The `UpdateSourceTrigger` can be changed:
 
 **Q72: What is `QueryProperty` and how is it used?**
 
+**Answer:**
 `QueryProperty` receives navigation parameters automatically:
 
 ```csharp
@@ -1301,6 +1364,7 @@ When navigating, Shell sets the `Station` property on the ViewModel before `OnAp
 
 **Q73: How does `BaseViewModel.ShowAlertAsync` work?**
 
+**Answer:**
 ```csharp
 protected async Task ShowAlertAsync(string title, string message, string cancel = "OK")
 {
@@ -1315,6 +1379,7 @@ It accesses `Shell.Current.CurrentPage` (the currently visible page) and calls `
 
 **Q74: What is the role of `IValueConverter`?**
 
+**Answer:**
 Converts binding values between the ViewModel and UI:
 
 ```csharp
@@ -1338,6 +1403,7 @@ Usage: `TextColor="{Binding IsActive, Converter={StaticResource BoolToColorConve
 
 **Q75: How would you bind a button's `IsEnabled` to a ViewModel property?**
 
+**Answer:**
 ```xml
 <Button Text="Submit" Command="{Binding SubmitCommand}"
         IsEnabled="{Binding CanSubmit}" />
@@ -1356,6 +1422,7 @@ async Task SubmitAsync() { ... }
 
 **Q76: Explain `x:Bind` vs `Binding` in MAUI.**
 
+**Answer:**
 | Feature | `x:Bind` (compiled) | `Binding` (reflection) |
 |---------|--------------------|------------------------|
 | Performance | Fast (compile-time) | Slower (runtime reflection) |
@@ -1369,6 +1436,7 @@ async Task SubmitAsync() { ... }
 
 **Q77: What is `x:Load` and how does it improve performance?**
 
+**Answer:**
 `x:Load` defers loading of XAML elements until they're needed:
 
 ```xml
@@ -1381,12 +1449,14 @@ Saves memory and startup time by not creating the control tree until the conditi
 
 **Q78: How does the `CommunityToolkit.Mvvm` source generator work?**
 
+**Answer:**
 It uses C# Roslyn source generators. At compile time, it analyzes your code for attributes like `[ObservableProperty]` and `[RelayCommand]`, then generates the implementation code. The generated code is compiled into your assembly — no runtime reflection needed.
 
 ---
 
 **Q79: What are `partial` methods and how does `OnIsBiometricEnabledChanged` get called?**
 
+**Answer:**
 The source generator creates a `partial` method signature:
 ```csharp
 partial void OnIsBiometricEnabledChanged(bool value);
@@ -1417,6 +1487,7 @@ partial void OnIsBiometricEnabledChanged(bool value)
 
 **Q80: How would you implement master-detail navigation with Shell?**
 
+**Answer:**
 ```xml
 <Shell>
     <!-- Master/flyout -->
@@ -1437,6 +1508,7 @@ partial void OnIsBiometricEnabledChanged(bool value)
 
 **Q81: What is dependency injection and why is it used?**
 
+**Answer:**
 DI supplies an object's dependencies from the outside rather than the object creating them itself. Benefits: loose coupling, testability, centralized configuration.
 
 ```csharp
@@ -1458,6 +1530,7 @@ public class LoginViewModel
 
 **Q82: What is the difference between `AddSingleton`, `AddTransient`, and `AddScoped`?**
 
+**Answer:**
 ```csharp
 builder.Services.AddSingleton<IAuthService, AuthService>();    // one instance for app lifetime
 builder.Services.AddTransient<LoginViewModel>();                // new instance per injection
@@ -1472,6 +1545,7 @@ builder.Services.AddScoped<MyService>();                        // one per scope
 
 **Q83: How does the DI container resolve `LoginViewModel`?**
 
+**Answer:**
 1. DI container sees `LoginViewModel` needs `IAuthService`, `ISecureStorageService`, `INavigationService`, `IConnectivityService` in its constructor.
 2. It looks up each interface in its registry.
 3. `IAuthService` → registered as `AuthService` singleton.
@@ -1482,6 +1556,7 @@ builder.Services.AddScoped<MyService>();                        // one per scope
 
 **Q84: What happens if you register the same interface twice?**
 
+**Answer:**
 The last registration wins:
 
 ```csharp
@@ -1500,6 +1575,7 @@ var services = serviceProvider.GetServices<IAuthService>();  // both
 
 **Q85: How would you register a service differently for Debug vs Release?**
 
+**Answer:**
 ```csharp
 #if DEBUG
     builder.Services.AddSingleton<IApiService, MockApiService>();
@@ -1518,6 +1594,7 @@ if (builder.Environment.IsDevelopment())
 
 **Q86: What is the Service Locator anti-pattern?**
 
+**Answer:**
 Resolving services on demand from a static container:
 
 ```csharp
@@ -1535,6 +1612,7 @@ public void Login()
 
 **Q87: How does constructor injection work with MAUI Shell pages?**
 
+**Answer:**
 When Shell navigates to a page, MAUI's DI container resolves it:
 
 ```csharp
@@ -1549,6 +1627,7 @@ When Shell navigates to a page, MAUI's DI container resolves it:
 
 **Q88: What is `IServiceProvider` and how was it used before refactoring?**
 
+**Answer:**
 `IServiceProvider` is the DI container itself. It was used in `ApiService` to lazily resolve `AuthService` to avoid a circular dependency:
 
 ```csharp
@@ -1568,6 +1647,7 @@ This was removed because the circular dependency was eliminated by simplifying t
 
 **Q89: How would you inject configuration like URLs into a service?**
 
+**Answer:**
 Options pattern:
 
 ```csharp
@@ -1595,6 +1675,7 @@ public class ApiService
 
 **Q90: What is the composition root in MAUI?**
 
+**Answer:**
 The composition root is where all dependencies are wired up — `MauiProgram.cs`:
 
 ```csharp
@@ -1617,6 +1698,7 @@ The composition root should be the only place where you configure DI. Avoid regi
 
 **Q91: How would you unit test `LoginViewModel.LoginAsync()`?**
 
+**Answer:**
 Use a mocking framework (Moq, NSubstitute) to mock dependencies:
 
 ```csharp
@@ -1646,6 +1728,7 @@ public async Task LoginAsync_ValidCredentials_NavigatesToDashboard()
 
 **Q92: What is mocking?**
 
+**Answer:**
 Mocking creates fake objects that simulate real dependencies. You define what methods should return and verify they were called:
 
 ```csharp
@@ -1660,6 +1743,7 @@ mockApi.Setup(a => a.GetAsync<List<StationModel>>("/api/station/nearby"))
 
 **Q93: How would you test `ApiService.HandleResponse<T>`?**
 
+**Answer:**
 ```csharp
 [Test]
 public async Task HandleResponse_NonSuccessStatusCode_Throws()
@@ -1682,6 +1766,7 @@ public async Task HandleResponse_NonSuccessStatusCode_Throws()
 
 **Q94: What debugging tools are available for MAUI on Windows?**
 
+**Answer:**
 - **Visual Studio debugger** — breakpoints, watch, immediate window
 - **XAML Hot Reload** — modify XAML while app is running
 - **Live Visual Tree** — inspect the visual tree at runtime
@@ -1693,6 +1778,7 @@ public async Task HandleResponse_NonSuccessStatusCode_Throws()
 
 **Q95: How would you diagnose why a data-bound label isn't updating?**
 
+**Answer:**
 1. Check the `Output` window for binding errors (`"Binding: 'MyProperty' not found on 'MyViewModel'"`)
 2. Verify the ViewModel property has `[ObservableProperty]` or raises `PropertyChanged`
 3. Check `x:DataType` is correct and includes the property
@@ -1703,6 +1789,7 @@ public async Task HandleResponse_NonSuccessStatusCode_Throws()
 
 **Q96: What is UI testing in MAUI?**
 
+**Answer:**
 UI testing automates user interactions using `Microsoft.Maui.Testing`:
 
 ```csharp
@@ -1722,6 +1809,7 @@ public async Task LoginPage_ValidLogin_NavigatesToDashboard()
 
 **Q97: How would you test async methods that use `await`?**
 
+**Answer:**
 ```csharp
 [Test]
 public async Task LoadDataAsync_WhenApiFails_SetsDummyData()
@@ -1748,6 +1836,7 @@ Use `ReturnsAsync` for successful results and `ThrowsAsync` for exceptions.
 
 **Q98: What is the Arrange-Act-Assert pattern?**
 
+**Answer:**
 ```
 // Arrange    - set up test data and mocks
 // Act        - execute the method under test
@@ -1773,6 +1862,7 @@ public void Add_TwoNumbers_ReturnsSum()
 
 **Q99: How would you verify a navigation call happened in a ViewModel test?**
 
+**Answer:**
 ```csharp
 var navMock = new Mock<INavigationService>();
 var vm = new LoginViewModel(..., navMock.Object, ...);
@@ -1787,6 +1877,7 @@ navMock.Verify(n => n.NavigateToAsync("//dashboard", It.IsAny<IDictionary<string
 
 **Q100: How do you test code that depends on `SecureStorage` or platform APIs?**
 
+**Answer:**
 Wrap platform APIs in injectable interfaces and mock them:
 
 ```csharp
@@ -1807,6 +1898,7 @@ storageMock.Setup(s => s.GetAsync("auth_token")).ReturnsAsync("test_jwt");
 
 **Q101: What MAUI-specific performance concerns are there?**
 
+**Answer:**
 - **Startup time** — minimize assembly loading, use compiled bindings
 - **Memory** — `CollectionView` virtualizes; plain `StackLayout` with 1000 items does NOT
 - **UI thread** — don't block it with sync operations
@@ -1817,18 +1909,21 @@ storageMock.Setup(s => s.GetAsync("auth_token")).ReturnsAsync("test_jwt");
 
 **Q102: How does `CollectionView` with `DataTemplate` get recycled?**
 
+**Answer:**
 `CollectionView` creates only as many items as fit on screen. When you scroll, items that go off-screen are recycled (their views are reused for the new items). This prevents creating thousands of views for a list of 10,000 items.
 
 ---
 
 **Q103: What is AOT compilation in MAUI?**
 
+**Answer:**
 AOT (Ahead-Of-Time) compilation compiles C# to native code at build time rather than at runtime. On Windows, MAUI uses .NET Native AOT. Benefits: faster startup, less memory. The `MVVMTK0045` warnings in the app are about `[ObservableProperty]` fields not being compatible with WinRT AOT — they'd need to use `partial` properties instead.
 
 ---
 
 **Q104: How would you reduce app startup time?**
 
+**Answer:**
 1. Use compiled bindings (`x:DataType`)
 2. Defer XAML loading with `x:Load`
 3. Lazy-initialize services
@@ -1840,6 +1935,7 @@ AOT (Ahead-Of-Time) compilation compiles C# to native code at build time rather 
 
 **Q105: What is the risk of storing JWT tokens in `Preferences` vs `SecureStorage`?**
 
+**Answer:**
 | Storage | Encrypted? | Risk |
 |---------|-----------|------|
 | `Preferences` | No (plain text) | Other apps/malware can read the token |
@@ -1851,6 +1947,7 @@ Always use `SecureStorage` for tokens, passwords, and any sensitive data. `Prefe
 
 **Q106: How does `HttpClient` timeout protect the app?**
 
+**Answer:**
 ```csharp
 _httpClient.Timeout = TimeSpan.FromSeconds(30);
 ```
@@ -1861,6 +1958,7 @@ If the server doesn't respond within 30 seconds, `HttpClient` throws `TaskCancel
 
 **Q107: What is input validation and how is it done in `AddMoneyViewModel`?**
 
+**Answer:**
 ```csharp
 [RelayCommand]
 async Task AddMoneyAsync()
@@ -1880,6 +1978,7 @@ Validation before API call prevents sending invalid data and gives instant user 
 
 **Q108: How would you prevent SQL injection in an API endpoint?**
 
+**Answer:**
 Always use parameterized queries with EF Core:
 
 ```csharp
@@ -1896,6 +1995,7 @@ EF Core's LINQ methods always generate parameterized SQL.
 
 **Q109: What is XSS and how does MAUI protect against it?**
 
+**Answer:**
 XSS (Cross-Site Scripting) injects malicious scripts into web pages. MAUI is a native app, not a web app, so XSS is generally not a concern. However, if you load HTML in a `WebView`, sanitize the input:
 
 ```csharp
@@ -1907,6 +2007,7 @@ var sanitized = System.Web.HttpUtility.HtmlEncode(userInput);
 
 **Q110: How would you secure the API over public internet?**
 
+**Answer:**
 1. **HTTPS** — always use TLS/SSL (not HTTP)
 2. **JWT authentication** with short-lived tokens
 3. **Rate limiting** — prevent brute force attacks
@@ -1921,6 +2022,7 @@ var sanitized = System.Web.HttpUtility.HtmlEncode(userInput);
 
 **Q111: What is SOLID? Examples from this codebase.**
 
+**Answer:**
 | Principle | Meaning | Example |
 |-----------|---------|---------|
 | **S**ingle Responsibility | A class has one reason to change | `ApiService` handles HTTP; `AuthService` handles auth |
@@ -1933,6 +2035,7 @@ var sanitized = System.Web.HttpUtility.HtmlEncode(userInput);
 
 **Q112: Composition vs inheritance? Which does MAUI prefer?**
 
+**Answer:**
 - **Inheritance:** "is-a" — `ContentPage`, `BaseViewModel`
 - **Composition:** "has-a" — ViewModel `has-a` `IApiService`
 
@@ -1942,6 +2045,7 @@ MAUI prefers composition. ViewModels compose services via constructor injection 
 
 **Q113: Explain the Repository pattern.**
 
+**Answer:**
 The Repository pattern abstracts data access behind an interface. In the API:
 
 ```csharp
@@ -1968,6 +2072,7 @@ The controller depends on `IStationRepository`, not `AppDbContext`. This makes d
 
 **Q114: Map `EVSwap.API` layers to Clean Architecture.**
 
+**Answer:**
 | Layer | Clean Architecture | EVSwap.API |
 |-------|-------------------|------------|
 | 1 | Domain / Core | `Core/` — Entities, DTOs, Interfaces, Business logic |
@@ -1980,6 +2085,7 @@ The domain layer (`Core/`) has no dependency on infrastructure — it defines in
 
 **Q115: What is technical debt and how would you identify it?**
 
+**Answer:**
 Technical debt is the implied cost of rework caused by choosing an easy solution now instead of a better approach that would take longer. Signs:
 
 - Duplicate code (e.g., similar ViewModel patterns copy-pasted)
@@ -1992,6 +2098,7 @@ Technical debt is the implied cost of rework caused by choosing an easy solution
 
 **Q116: How would you implement logging across the app?**
 
+**Answer:**
 Use `Microsoft.Extensions.Logging`:
 
 ```csharp
@@ -2017,6 +2124,7 @@ public class LoginViewModel
 
 **Q117: Unit testing vs integration testing.**
 
+**Answer:**
 | Aspect | Unit Test | Integration Test |
 |--------|-----------|-----------------|
 | Scope | Single class/method | Multiple components together |
@@ -2030,6 +2138,7 @@ public class LoginViewModel
 
 **Q118: How would you version a REST API?**
 
+**Answer:**
 ```csharp
 // URL-based versioning
 [Route("api/v1/[controller]")]
@@ -2045,6 +2154,7 @@ Or header-based: `Accept: application/vnd.evswap.v2+json`
 
 **Q119: What is CORS and when would you need it?**
 
+**Answer:**
 CORS (Cross-Origin Resource Sharing) controls which web domains can call your API. Needed when a web app on a different domain tries to make AJAX requests to your API. In MAUI (native app), CORS is NOT needed — native apps don't have origin restrictions.
 
 For the API, CORS is configured:
@@ -2057,6 +2167,7 @@ builder.Services.AddCors(options =>
 
 **Q120: How would you deploy a MAUI Windows app to end users?**
 
+**Answer:**
 1. **Build in Release mode:** `dotnet publish -f net10.0-windows10.0.19041.0 -c Release`
 2. **Package as MSIX:** Create a Windows App Package project in Visual Studio
 3. **Sign the package** with a code signing certificate
@@ -2071,12 +2182,14 @@ builder.Services.AddCors(options =>
 
 **Q121: What is `Handler` vs `Renderer` in MAUI?**
 
+**Answer:**
 Handlers replaced Renderers in MAUI. Renderers (Xamarin.Forms) created a native view per platform. Handlers are more lightweight — they map cross-platform controls to native views via a mapping dictionary without the overhead of a full `ViewRenderer` base class.
 
 ---
 
 **Q122: How does `IPlatformApplication` work in MAUI?**
 
+**Answer:**
 It allows platform-specific code to run at startup. On Windows, you can configure the window:
 
 ```csharp
@@ -2091,6 +2204,7 @@ public class App : Microsoft.UI.Xaml.Application, IPlatformApplication
 
 **Q123: What is the difference between `OnPlatform` and `OnIdiom`?**
 
+**Answer:**
 ```xml
 <!-- Platform-specific -->
 <Label Text="{OnPlatform Default='Running', Android='Droid', iOS='iPhone'}" />
@@ -2103,6 +2217,7 @@ public class App : Microsoft.UI.Xaml.Application, IPlatformApplication
 
 **Q124: How do you handle app themes (Light/Dark mode) in MAUI?**
 
+**Answer:**
 Use `AppThemeBinding` in styles (Q20) and detect the current theme:
 
 ```csharp
@@ -2114,6 +2229,7 @@ Application.Current?.UserAppTheme = AppTheme.Dark;  // override
 
 **Q125: What is `Shell.TabBar` and how does it differ from `FlyoutItem`?**
 
+**Answer:**
 `TabBar` shows tabs at the bottom. `FlyoutItem` shows items in a side menu (hamburger menu). You can mix both:
 
 ```xml
@@ -2132,6 +2248,7 @@ Application.Current?.UserAppTheme = AppTheme.Dark;  // override
 
 **Q126: What is `IDispatcher` and how is it used in MAUI?**
 
+**Answer:**
 `IDispatcher` schedules work on the UI thread. Use it when you need to update UI from a background thread:
 
 ```csharp
@@ -2165,6 +2282,7 @@ public class DashboardViewModel
 
 **Q127: What are `AppLinks` and `UriScheme` in MAUI?**
 
+**Answer:**
 AppLinks allow your app to handle custom URI schemes and deep links:
 
 ```csharp
@@ -2185,6 +2303,7 @@ Registered in `Platforms/Windows/Package.appxmanifest` and `AndroidManifest.xml`
 
 **Q128: How does `SecureStorage` work on each platform?**
 
+**Answer:**
 | Platform | Implementation |
 |----------|---------------|
 | **Windows** | Data Protection API (DPAPI) — encrypts with user's Windows credentials |
@@ -2205,6 +2324,7 @@ var token = await SecureStorage.Default.GetAsync("auth_token");
 
 **Q129: What is the `Connectivity` API and how is it used?**
 
+**Answer:**
 Detects network state changes in real time:
 
 ```csharp
@@ -2230,6 +2350,7 @@ public class ConnectivityService : IConnectivityService
 
 **Q130: How do you implement `Geolocation` in MAUI?**
 
+**Answer:**
 ```csharp
 public async Task<Location?> GetCurrentLocationAsync()
 {
@@ -2255,6 +2376,7 @@ public async Task<Location?> GetCurrentLocationAsync()
 
 **Q131: How do you handle file picker interactions in MAUI?**
 
+**Answer:**
 ```csharp
 public async Task<string?> PickImageAsync()
 {
@@ -2282,6 +2404,7 @@ public async Task<string?> PickImageAsync()
 
 **Q132: What is `BackgroundService` in .NET MAUI?**
 
+**Answer:**
 `BackgroundService` runs long-lived background tasks. In a MAUI app, you can use it for periodic API polling or data sync:
 
 ```csharp
@@ -2319,6 +2442,7 @@ public class SyncBackgroundService : BackgroundService
 
 **Q133: How do you implement custom fonts in MAUI?**
 
+**Answer:**
 ```csharp
 // MauiProgram.cs
 builder.ConfigureFonts(fonts =>
@@ -2339,6 +2463,7 @@ Font files go in `Resources/Fonts/` folder. The filename extension must be `.ttf
 
 **Q134: How do you create custom handlers for platform-specific behavior?**
 
+**Answer:**
 ```csharp
 // Custom handler to disable Entry spell check on specific platforms
 public static class EntrySpellCheckHandler
@@ -2366,6 +2491,7 @@ EntrySpellCheckHandler.DisableSpellCheck();
 
 **Q135: What are `Behaviors` in MAUI?**
 
+**Answer:**
 Behaviors attach reusable functionality to controls without subclassing:
 
 ```csharp
@@ -2399,6 +2525,7 @@ public class NumericEntryBehavior : Behavior<Entry>
 
 **Q136: How does `DataTemplateSelector` work?**
 
+**Answer:**
 Creates different templates based on data type or condition:
 
 ```csharp
@@ -2429,6 +2556,7 @@ public class SwapTemplateSelector : DataTemplateSelector
 
 **Q137: What is `SwipeView` and how does it work?**
 
+**Answer:**
 `SwipeView` reveals action buttons on swipe:
 
 ```xml
@@ -2452,6 +2580,7 @@ public class SwapTemplateSelector : DataTemplateSelector
 
 **Q138: How do you implement animations in MAUI?**
 
+**Answer:**
 ```csharp
 // In code-behind or ViewModel
 await myLabel.FadeTo(0, 300);       // fade out in 300ms
@@ -2472,6 +2601,7 @@ await Task.WhenAll(
 
 **Q139: How do you create custom page transitions?**
 
+**Answer:**
 Register custom animations in Shell navigation:
 
 ```csharp
@@ -2493,6 +2623,7 @@ NavigationPage.SetTransitionType(page, typeof(SlideUpTransition));
 
 **Q140: What are `GestureRecognizers` in MAUI?**
 
+**Answer:**
 ```xml
 <!-- Tap -->
 <Frame>
@@ -2513,6 +2644,7 @@ NavigationPage.SetTransitionType(page, typeof(SlideUpTransition));
 
 **Q141: What is `System.Text.Json` vs `Newtonsoft.Json`?**
 
+**Answer:**
 | Feature | System.Text.Json | Newtonsoft.Json |
 |---------|-----------------|-----------------|
 | Performance | Faster (no reflection-heavy fallback) | Slower |
@@ -2528,6 +2660,7 @@ NavigationPage.SetTransitionType(page, typeof(SlideUpTransition));
 
 **Q142: What are JSON source generators?**
 
+**Answer:**
 ```csharp
 [JsonSerializable(typeof(AuthResponse))]
 [JsonSerializable(typeof(LoginRequest))]
@@ -2546,6 +2679,7 @@ var user = JsonSerializer.Deserialize(json, typeof(UserModel), options);
 
 **Q143: What is the `dotnet` CLI and what commands are used in this project?**
 
+**Answer:**
 ```bash
 dotnet restore          # Restore NuGet packages
 dotnet build            # Build the solution
@@ -2560,6 +2694,7 @@ dotnet test             # Run unit tests
 
 **Q144: What are `TargetFrameworks` in MAUI .csproj?**
 
+**Answer:**
 ```xml
 <!-- EVSwap.Mobile.csproj -->
 <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst;net10.0-windows10.0.19041.0</TargetFrameworks>
@@ -2575,6 +2710,7 @@ Each target framework compiles the same code for a different platform:
 
 **Q145: How does `GC` (Garbage Collection) work in .NET MAUI apps?**
 
+**Answer:**
 The GC automatically reclaims memory of unreachable objects. In MAUI:
 
 ```csharp
@@ -2596,6 +2732,7 @@ The GC automatically reclaims memory of unreachable objects. In MAUI:
 
 **Q146: What are `WeakReference` and `WeakReferenceMessenger`?**
 
+**Answer:**
 `WeakReference` allows the GC to collect an object while you still hold a reference:
 
 ```csharp
@@ -2621,6 +2758,7 @@ WeakReferenceMessenger.Default.Register<SwapCompletedMessage>(this, (r, m) =>
 
 **Q147: What is `SemaphoreSlim` and when would you use it?**
 
+**Answer:**
 Controls access to a limited resource. Used to prevent concurrent API calls:
 
 ```csharp
@@ -2648,6 +2786,7 @@ public class StationService
 
 **Q148: What is `Channel<T>` in `System.Threading.Channels`?**
 
+**Answer:**
 A thread-safe producer/consumer queue for high-throughput scenarios:
 
 ```csharp
@@ -2669,6 +2808,7 @@ await foreach (var request in channel.Reader.ReadAllAsync())
 
 **Q149: How do C# Source Generators work in MVVM Toolkit?**
 
+**Answer:**
 Source generators run at compile time, analyzing attributes and generating code:
 
 ```csharp
@@ -2700,6 +2840,7 @@ The generator is an `ISourceGenerator` interface implementation that uses Roslyn
 
 **Q150: What is `IAsyncStateMachine` and how does `async`/`await` compile?**
 
+**Answer:**
 The compiler transforms `async` methods into a state machine struct implementing `IAsyncStateMachine`:
 
 ```csharp
@@ -2745,6 +2886,7 @@ private struct LoginAsyncStateMachine : IAsyncStateMachine
 
 **Q151: What is `Span<T>` and `Memory<T>` for performance?**
 
+**Answer:**
 Stack-allocated views over contiguous memory with zero allocations:
 
 ```csharp
@@ -2766,6 +2908,7 @@ var domain = email[(atIndex + 1)..]; // "example.com" - no new string
 
 **Q152: What is `ConfigureAwait(false)` and when should you use it in MAUI?**
 
+**Answer:**
 ```csharp
 // In service layer (no UI touch) - OK to use
 public async Task<UserModel?> GetUserAsync(int id)
@@ -2789,6 +2932,7 @@ public async Task LoadDataAsync()
 
 **Q153: How does `IHttpClientFactory` work and is it needed in MAUI?**
 
+**Answer:**
 `IHttpClientFactory` manages `HttpClient` lifetime to prevent socket exhaustion in ASP.NET Core apps. In MAUI, it's generally unnecessary because:
 
 1. MAUI apps typically call one API server
@@ -2809,6 +2953,7 @@ builder.Services.AddHttpClient<IApiService, ApiService>(client =>
 
 **Q154: What is the `Options` pattern in .NET?**
 
+**Answer:**
 ```csharp
 // Define options class
 public class ApiOptions
@@ -2841,6 +2986,7 @@ public class ApiService
 
 **Q155: How does `ILogger<T>` integrate with MAUI?**
 
+**Answer:**
 ```csharp
 // MauiProgram.cs
 builder.Logging.AddDebug();
@@ -2878,6 +3024,7 @@ public class LoginViewModel
 
 **Q156: How do you implement a custom proxy/wrapper around HttpClient for logging?**
 
+**Answer:**
 ```csharp
 public class LoggingDelegatingHandler : DelegatingHandler
 {
@@ -2909,6 +3056,7 @@ public class LoggingDelegatingHandler : DelegatingHandler
 
 **Q157: How do you implement a `Timer`-based auto-refresh in a ViewModel?**
 
+**Answer:**
 ```csharp
 public partial class DashboardViewModel : BaseViewModel, IDisposable
 {
@@ -2940,6 +3088,7 @@ public partial class DashboardViewModel : BaseViewModel, IDisposable
 
 **Q158: What is `INotifyPropertyChanging` vs `INotifyPropertyChanged`?**
 
+**Answer:**
 ```csharp
 // INotifyPropertyChanging - fires BEFORE the property changes
 // INotifyPropertyChanged - fires AFTER the property changes
@@ -2958,6 +3107,7 @@ partial void OnUserNameChanging(string value)
 
 **Q159: How do you implement `IComparable` for sorting in CollectionView?**
 
+**Answer:**
 ```csharp
 public class StationModel : IComparable<StationModel>
 {
@@ -2979,6 +3129,7 @@ Stations = new ObservableCollection<StationModel>(stations.OrderBy(s => s));
 
 **Q160: How do you use `INotifyDataErrorInfo` for validation?**
 
+**Answer:**
 ```csharp
 public partial class AddMoneyViewModel : BaseViewModel, INotifyDataErrorInfo
 {
@@ -3023,6 +3174,7 @@ public partial class AddMoneyViewModel : BaseViewModel, INotifyDataErrorInfo
 
 **Q161: How does `MethodImplAttribute` affect performance?**
 
+**Answer:**
 ```csharp
 // Inline method aggressively
 [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -3041,6 +3193,7 @@ public void CriticalSection() { }
 
 **Q162: How does `DllImport` work in .NET MAUI for P/Invoke?**
 
+**Answer:**
 ```csharp
 // Windows native API call
 [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -3057,6 +3210,7 @@ private static extern int getpid();
 
 **Q163: What is `Interlocked` and how does it prevent race conditions?**
 
+**Answer:**
 ```csharp
 public class CounterService
 {
@@ -3085,6 +3239,7 @@ public class CounterService
 
 **Q164: What is `readonly` vs `const` vs `static readonly`?**
 
+**Answer:**
 ```csharp
 public class Constants
 {
@@ -3107,6 +3262,7 @@ public class Constants
 
 **Q165: How does `async` work in `foreach` with `IAsyncEnumerable<T>`?**
 
+**Answer:**
 ```csharp
 public async Task ProcessSwapsAsync(IAsyncEnumerable<SwapModel> swaps)
 {
@@ -3139,6 +3295,7 @@ public async IAsyncEnumerable<SwapModel> GetSwapsAsync()
 
 **Q166: What is the difference between `throw` and `throw ex`?**
 
+**Answer:**
 ```csharp
 try
 {
@@ -3163,6 +3320,7 @@ catch (HttpRequestException ex)
 
 **Q167: How does `ExceptionDispatchInfo` preserve exception context across threads?**
 
+**Answer:**
 ```csharp
 // Captures exception with its original stack trace
 ExceptionDispatchInfo? capturedEx = null;
@@ -3184,6 +3342,7 @@ capturedEx?.Throw();  // rethrows with original stack trace preserved
 
 **Q168: What is the `using` statement and how does it compile?**
 
+**Answer:**
 ```csharp
 // C# 8+ using declaration (disposed at end of scope)
 using var httpClient = new HttpClient();
@@ -3206,6 +3365,7 @@ finally
 
 **Q169: How does `IProgress<T>` work for reporting progress?**
 
+**Answer:**
 ```csharp
 public async Task UploadImageAsync(Stream image, IProgress<double> progress)
 {
@@ -3234,6 +3394,7 @@ await UploadImageAsync(image, progress);
 
 **Q170: What is `ConcurrentDictionary<TKey, TValue>` and when to use it?**
 
+**Answer:**
 Thread-safe dictionary that works without explicit locks:
 
 ```csharp
@@ -3260,6 +3421,7 @@ public class CacheService
 
 **Q171: How does `System.Threading.Tasks.Dataflow` work?**
 
+**Answer:**
 Actor-based parallelism for pipeline processing:
 
 ```csharp
@@ -3294,6 +3456,7 @@ await downloadBlock.Completion;
 
 **Q172: How does the `Factory` pattern apply in MAUI DI?**
 
+**Answer:**
 ```csharp
 // Factory pattern - create instances with runtime parameters
 public interface IViewModelFactory
@@ -3329,6 +3492,7 @@ public class ViewModelFactory : IViewModelFactory
 
 **Q173: How does the `Strategy` pattern apply to API error handling?**
 
+**Answer:**
 ```csharp
 public interface IRetryStrategy
 {
@@ -3366,6 +3530,7 @@ public class NoRetryStrategy : IRetryStrategy
 
 **Q174: How does the `Observer` pattern work with `INotifyPropertyChanged`?**
 
+**Answer:**
 ```csharp
 // Subject (observable)
 public partial class UserModel : ObservableObject
@@ -3393,6 +3558,7 @@ The `ObservableObject` base class (from MVVM Toolkit) implements `INotifyPropert
 
 **Q175: How does the `Chain of Responsibility` pattern apply to `DelegatingHandler`?**
 
+**Answer:**
 ```csharp
 // Each handler in the chain does its job then passes to the next
 // HttpClient pipeline:
@@ -3419,6 +3585,7 @@ public class AuthDelegatingHandler : DelegatingHandler
 
 **Q176: How does `Builder` pattern relate to `MauiAppBuilder`?**
 
+**Answer:**
 ```csharp
 // The Builder pattern separates construction from representation.
 // MauiAppBuilder is the classic Builder pattern:
@@ -3445,6 +3612,7 @@ public static class MauiAppBuilderExtensions
 
 **Q177: How does the `Facade` pattern simplify API integration?**
 
+**Answer:**
 ```csharp
 // Facade - simplified interface to a complex subsystem
 public class SwapFacade
@@ -3482,6 +3650,7 @@ public class SwapFacade
 
 **Q178: How do you implement undo/redo in a MAUI app?**
 
+**Answer:**
 ```csharp
 public class UndoRedoService
 {
@@ -3518,6 +3687,7 @@ public class UndoRedoService
 
 **Q179: How do you handle unhandled exceptions globally in MAUI?**
 
+**Answer:**
 ```csharp
 // MauiProgram.cs
 public static MauiApp CreateMauiApp()
@@ -3555,6 +3725,7 @@ public static MauiApp CreateMauiApp()
 
 **Q180: How do you implement biometric authentication in MAUI?**
 
+**Answer:**
 ```csharp
 public async Task<bool> AuthenticateWithBiometricsAsync()
 {
@@ -3591,6 +3762,7 @@ public async Task<bool> AuthenticateWithBiometricsAsync()
 
 **Q181: How do you implement infinite scroll with `RemainingItemsThreshold`?**
 
+**Answer:**
 ```xml
 <CollectionView ItemsSource="{Binding Stations}"
                 RemainingItemsThreshold="5"
@@ -3629,6 +3801,7 @@ async Task LoadMoreAsync()
 
 **Q182: How do you implement search with debounce in MAUI?**
 
+**Answer:**
 ```csharp
 private CancellationTokenSource? _searchCts;
 
@@ -3658,6 +3831,7 @@ partial void OnSearchQueryChanged(string value)
 
 **Q183: How do you cache API responses in MAUI?**
 
+**Answer:**
 ```csharp
 public class CachedApiService : IApiService
 {
@@ -3697,6 +3871,7 @@ public class CachedApiService : IApiService
 
 **Q184: How do you handle simultaneous API calls efficiently?**
 
+**Answer:**
 ```csharp
 // Parallel independent calls
 public async Task LoadDashboardDataAsync()
@@ -3730,6 +3905,7 @@ public async Task<T> ThrottledCallAsync<T>(Func<Task<T>> call)
 
 **Q185: How do you structure multi-module MAUI apps?**
 
+**Answer:**
 ```
 EVSwap.slnx
 ├── src/
@@ -3751,6 +3927,7 @@ Modules communicate through shared interfaces in `EVSwap.Shared`, avoiding direc
 
 **Q186: How do you implement app-wide theming with dynamic switching?**
 
+**Answer:**
 ```csharp
 public partial class ThemeService
 {
@@ -3781,6 +3958,7 @@ void ToggleTheme()
 
 **Q187: How do you handle app state persistence between sessions?**
 
+**Answer:**
 ```csharp
 // Save state on OnSleep
 public partial class App : Application
@@ -3807,6 +3985,7 @@ public partial class App : Application
 
 **Q188: How do you handle app version checking and forced update?**
 
+**Answer:**
 ```csharp
 public async Task CheckVersionAsync()
 {
@@ -3842,6 +4021,7 @@ public async Task CheckVersionAsync()
 
 **Q189: What is `IMauiHandlersCollection` and how do you register custom handlers?**
 
+**Answer:**
 ```csharp
 // MauiProgram.cs
 builder.ConfigureMauiHandlers(handlers =>
@@ -3872,6 +4052,7 @@ public class CustomEntryHandler : EntryHandler
 
 **Q190: How does `IApplication` work in MAUI?**
 
+**Answer:**
 ```csharp
 public partial class App : Application, IApplication
 {
@@ -3896,6 +4077,7 @@ On Windows, each `Window` can be resized, positioned, and titled independently.
 
 **Q191: How does MAUI handle 60fps animations with `GraphicsView`?**
 
+**Answer:**
 ```csharp
 public class BatteryGaugeDrawable : IDrawable
 {
@@ -3930,6 +4112,7 @@ public class BatteryGaugeDrawable : IDrawable
 
 **Q192: How do you implement a `Map` control in MAUI?**
 
+**Answer:**
 ```csharp
 // NuGet: Microsoft.Maui.Controls.Maps
 
@@ -3974,6 +4157,7 @@ public async Task LoadStationsOnMapAsync(List<StationModel> stations)
 
 **Q193: How do you implement `LocalNotification` in MAUI?**
 
+**Answer:**
 ```csharp
 public class NotificationService
 {
@@ -4003,6 +4187,7 @@ public class NotificationService
 
 **Q194: How does `HttpCompletionOption` affect HTTP performance?**
 
+**Answer:**
 ```csharp
 // ResponseContentRead (default) - waits for entire response body
 await _httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead);
@@ -4018,6 +4203,7 @@ using var stream = await response.Content.ReadAsStreamAsync();
 
 **Q195: How do you implement `GlobalUsings` in .NET MAUI?**
 
+**Answer:**
 ```csharp
 // GlobalUsings.cs (at project root)
 global using System;
@@ -4041,6 +4227,7 @@ global using EVSwap.Mobile.Views;
 
 **Q196: What are `Conditional` compilation symbols in MAUI?**
 
+**Answer:**
 ```csharp
 // Built-in conditional symbols:
 // DEBUG, RELEASE (all platforms)
@@ -4073,6 +4260,7 @@ public class PlatformService
 
 **Q197: How does `Assembly` loading work in MAUI for reflection?**
 
+**Answer:**
 ```csharp
 public class ViewModelLocator
 {
@@ -4099,6 +4287,7 @@ public class ViewModelLocator
 
 **Q198: How do you implement `RateThisApp` functionality?**
 
+**Answer:**
 ```csharp
 public async Task PromptForReviewAsync()
 {
@@ -4130,6 +4319,7 @@ public async Task PromptForReviewAsync()
 
 **Q199: What is the `InterProcessCommunication` strategy in .NET MAUI?**
 
+**Answer:**
 MAUI itself doesn't provide IPC, but on Windows you can use:
 
 ```csharp
@@ -4162,6 +4352,7 @@ public class NamedPipeService
 
 **Q200: How do you prepare for a .NET MAUI interview using this project?**
 
+**Answer:**
 1. **Understand the architecture** — practice explaining the full flow: LoginPage → ViewModel → AuthService → ApiService → HttpClient → API Controller → EF Core → Database.
 
 2. **Know the MVVM pattern inside out** — be ready to explain `[ObservableProperty]`, `[RelayCommand]`, `INotifyPropertyChanged`, compiled bindings.
